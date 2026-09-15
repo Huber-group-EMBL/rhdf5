@@ -540,38 +540,21 @@ NULL
 
 #' @rdname H5P_fill_value
 #' @export
-H5Pset_fill_value <- function(h5plist, value) {
+H5Pset_fill_value <- function(
+  h5plist,
+  value,
+  size = nchar(value, type = "bytes")
+) {
   if (length(value) > 1L) {
     stop("'value' must be a vector of length 1.")
   }
 
   h5checktypeAndPLC(h5plist, "H5P_DATASET_CREATE")
-  storage.mode <- storage.mode(value)
-  tid <- switch(
-    storage.mode,
-    double = h5constants$H5T["H5T_IEEE_F64LE"],
-    integer = h5constants$H5T["H5T_STD_I32LE"],
-    logical = h5constants$H5T["H5T_STD_I8LE"],
-    character = {
-      tid <- H5Tcopy("H5T_C_S1")
-      size <- nchar(value, type = "bytes")
-      H5Tset_size(tid, size)
-      H5Tset_strpad(tid, strpad = "NULLPAD")
-      if (Encoding(value) == "UTF-8") {
-        cset <- "UTF-8"
-      } else {
-        cset <- "ASCII"
-      }
-      H5Tset_cset(tid, cset = cset)
-      tid
-    },
-    {
-      stop(
-        "datatype ",
-        storage.mode,
-        " not supported. Try 'double', 'integer', or 'character'."
-      )
-    }
+  tid <- .setDataType(
+    NULL,
+    storage.mode(value),
+    size = size,
+    encoding = "UTF-8"
   )
   res <- .Call("_H5Pset_fill_value", h5plist@ID, tid, value, PACKAGE = "rhdf5")
   invisible(res)

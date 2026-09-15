@@ -1169,12 +1169,16 @@ SEXP _H5Pset_fill_value(SEXP _plist_id, SEXP _type_id, SEXP _value) {
   hid_t plist_id = STRSXP_2_HID(_plist_id);
   hid_t type_id = STRSXP_2_HID(_type_id);
   void *value;
-  if (type_id == H5T_IEEE_F64LE) {
+  const char *str;
+  if (H5Tequal(type_id, H5T_IEEE_F64LE) > 0) {
     value = REAL(_value);
-  } else if (type_id == H5T_STD_I32LE) {
+  } else if (H5Tequal(type_id, H5T_STD_I32LE) > 0) {
     value = INTEGER(_value);
-  } else if (type_id == H5T_STD_I8LE) {
+  } else if (H5Tequal(type_id, H5T_STD_I8LE) > 0) {
     value = LOGICAL(_value);
+  } else if (H5Tis_variable_str(type_id) > 0) {
+    str = CHAR(STRING_ELT(_value, 0));
+    value = (void *)&str;
   } else {
     value = (void *)CHAR(STRING_ELT(_value, 0));
   }

@@ -155,6 +155,7 @@ h5createGroup <- function(file, group) {
   dims,
   level,
   fillValue,
+  size,
   dtype,
   filter,
   shuffle = FALSE
@@ -247,7 +248,7 @@ h5createGroup <- function(file, group) {
   }
 
   if (!missing(fillValue)) {
-    H5Pset_fill_value(dcpl, fillValue)
+    H5Pset_fill_value(dcpl, fillValue, size = size)
   }
 
   ## turn off time stamp
@@ -515,6 +516,7 @@ h5createDataset <- function(
     dims,
     level,
     fillValue,
+    size = size,
     dtype = tid,
     filter = filter,
     shuffle = shuffle
