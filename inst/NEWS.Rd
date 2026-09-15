@@ -77,6 +77,9 @@
       documented above.
       \item Unused internal functions and arguments have been removed.
       \item Cyclomatic complexity of some functions has been reduced.
+      \item A number of \code{try()} calls have been removed to surface errors
+      instead of silently ignoring them. If you see any new errors as a result
+      of this, please report them.
     }
   }
 }
