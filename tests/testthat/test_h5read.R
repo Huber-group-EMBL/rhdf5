@@ -333,6 +333,18 @@ test_that("Empty index retain dimensionality", {
     expect_shape(dim = c(0L, 0L, 0L))
 })
 
+test_that("Indexing with non-consecutive indices", {
+  # https://github.com/Huber-group-EMBL/rhdf5/issues/240
+  h5f <- withr::local_tempfile(pattern = "ex_read", fileext = ".h5")
+  h5 <- h5createFile(h5f)
+
+  cn <- c("a", "b", "c", "d", "e", "f")
+  h5write(cn, h5f, "A")
+  h5read(h5f, "A", index = list(c(1L, 3L))) |>
+    expect_no_condition() |>
+    expect_identical(array(c("a", "c"), dim = c(2L)))
+})
+
 ############################################################
 context("64-bit conversion")
 ############################################################
