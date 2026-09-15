@@ -32,6 +32,8 @@ gives the default choice for each group.
 
 h5constType()[1]
 h5const(h5constType()[1])
+h5default(h5constType()[18])
+
 }
 \author{
 Bernd Fischer

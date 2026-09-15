@@ -14,6 +14,8 @@
 #'
 #' h5constType()[1]
 #' h5const(h5constType()[1])
+#' h5default(h5constType()[18])
+#'
 #' @name h5constants
 NULL
 
