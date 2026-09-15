@@ -22,3 +22,18 @@ that match the size and shape of \code{h5dataset} will be used.}
 \description{
 Write data to dataset
 }
+\examples{
+h5file <- tempfile(fileext = ".h5")
+h5createFile(h5file)
+
+fid <- H5Fopen(h5file)
+H5Dcreate(h5loc = fid, name = "A", dtype_id = "H5T_NATIVE_INT", h5space = H5Screate_simple(10))
+did <- H5Dopen(h5loc = fid, name = "A")
+H5Dwrite(h5dataset = did, buf = 1:10)
+H5Dread(did)
+
+## remember to close open handles
+H5Dclose(did)
+H5Fclose(fid)
+
+}

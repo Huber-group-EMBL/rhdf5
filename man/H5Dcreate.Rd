@@ -38,3 +38,17 @@ An object of class \code{H5IdComponent} representing the opened dataset.
 \description{
 Create a new HDF5 dataset
 }
+\examples{
+h5file <- tempfile(fileext = ".h5")
+h5createFile(h5file)
+
+fid <- H5Fopen(h5file)
+H5Dcreate(h5loc = fid, name = "A", dtype_id = "H5T_NATIVE_INT", h5space = H5Screate_simple(10))
+did <- H5Dopen(h5loc = fid, name = "A")
+did
+
+## remember to close open handles
+H5Dclose(did)
+H5Fclose(fid)
+
+}

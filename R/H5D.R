@@ -15,6 +15,19 @@
 #'
 #' @returns An object of class `H5IdComponent` representing the opened dataset.
 #'
+#' @examples
+#' h5file <- tempfile(fileext = ".h5")
+#' h5createFile(h5file)
+#'
+#' fid <- H5Fopen(h5file)
+#' H5Dcreate(h5loc = fid, name = "A", dtype_id = "H5T_NATIVE_INT", h5space = H5Screate_simple(10))
+#' did <- H5Dopen(h5loc = fid, name = "A")
+#' did
+#'
+#' ## remember to close open handles
+#' H5Dclose(did)
+#' H5Fclose(fid)
+#'
 #' @export
 H5Dcreate <- function(
   h5loc,
@@ -349,6 +362,20 @@ H5Dread <- function(
 #' @param h5spaceMem,h5spaceFile [H5IdComponent-class] objects representing the
 #' memory and file dataspaces respectively.  If these are left `NULL` dataspaces
 #' that match the size and shape of `h5dataset` will be used.
+#'
+#' @examples
+#' h5file <- tempfile(fileext = ".h5")
+#' h5createFile(h5file)
+#'
+#' fid <- H5Fopen(h5file)
+#' H5Dcreate(h5loc = fid, name = "A", dtype_id = "H5T_NATIVE_INT", h5space = H5Screate_simple(10))
+#' did <- H5Dopen(h5loc = fid, name = "A")
+#' H5Dwrite(h5dataset = did, buf = 1:10)
+#' H5Dread(did)
+#'
+#' ## remember to close open handles
+#' H5Dclose(did)
+#' H5Fclose(fid)
 #'
 #' @export
 H5Dwrite <- function(
