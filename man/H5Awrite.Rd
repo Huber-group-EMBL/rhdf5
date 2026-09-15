@@ -15,3 +15,18 @@ attribute.  Normally created by \code{\link[=H5Aopen]{H5Aopen()}} or similar.}
 \description{
 Write data to an HDF5 attribute
 }
+\examples{
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+
+H5Awrite(aid, 42L)
+H5Aread(aid)
+
+H5Aclose(aid)
+H5Sclose(sid)
+H5Fclose(fid)
+file.remove(h5File)
+
+}

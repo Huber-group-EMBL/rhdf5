@@ -16,6 +16,17 @@
 #'
 #' @returns An object of class [H5IdComponent-class] representing a H5 attribute identifier.
 #'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
+#'
 #' @export
 H5Acreate <- function(h5obj, name, dtype_id, h5space) {
   h5checktype(h5obj, "object")
@@ -57,6 +68,29 @@ H5Acreate <- function(h5obj, name, dtype_id, h5space) {
 #' @param order See `h5const("H5_ITER")` for possible arguments.
 #'
 #' @returns An object of class [H5IdComponent-class] representing a H5 attribute identifier.
+#'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#'
+#' ## open the attribute by name
+#' aid <- H5Aopen(fid, "some_attribute")
+#' H5Aclose(aid)
+#'
+#' ## open the attribute by name, relative to an object
+#' aid <- H5Aopen_by_name(fid, objname = ".", name = "some_attribute")
+#' H5Aclose(aid)
+#'
+#' ## open the first (n = 0) attribute attached to the object
+#' aid <- H5Aopen_by_idx(fid, n = 0)
+#' H5Aclose(aid)
+#'
+#' H5Fclose(fid)
+#' file.remove(h5File)
 #'
 #' @name H5Aopen
 NULL
@@ -145,6 +179,20 @@ H5Aopen_by_idx <- function(
 #' @returns A logical value indicating whether an attribute with name `name`
 #'   exists for the object specified by `h5obj`.
 #'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#'
+#' H5Aexists(fid, "some_attribute")
+#' H5Aexists(fid, "not_an_attribute")
+#'
+#' H5Fclose(fid)
+#' file.remove(h5File)
+#'
 #' @export
 H5Aexists <- function(h5obj, name) {
   h5checktype(h5obj, "object")
@@ -162,6 +210,19 @@ H5Aexists <- function(h5obj, name) {
 #' the attribute to be closed.  Normally created by [H5Aopen()] or similar.
 #'
 #' @seealso [H5Aopen()]
+#'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' H5Aclose(aid)
+#'
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
+#'
 #' @export
 H5Aclose <- function(h5attribute) {
   h5checktype(h5attribute, "attribute")
@@ -174,6 +235,21 @@ H5Aclose <- function(h5attribute) {
 #' identifier (file, group, or dataset). See [H5Fcreate()], [H5Fopen()],
 #' [H5Gcreate()], [H5Gopen()], [H5Dcreate()], or [H5Dopen()] to create an object of this kind.
 #' @param name The name of the attribute (character).
+#'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#'
+#' H5Aexists(fid, "some_attribute")
+#' H5Adelete(fid, "some_attribute")
+#' H5Aexists(fid, "some_attribute")
+#'
+#' H5Fclose(fid)
+#' file.remove(h5File)
 #'
 #' @export
 H5Adelete <- function(h5obj, name) {
@@ -194,6 +270,19 @@ H5Adelete <- function(h5obj, name) {
 #'
 #' @returns A character vector of length 1 containing the name of the attribute.
 #'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' H5Aget_name(aid)
+#'
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
+#'
 #' @export
 H5Aget_name <- function(h5attribute) {
   h5checktype(h5attribute, "attribute")
@@ -208,6 +297,21 @@ H5Aget_name <- function(h5attribute) {
 #'
 #' @returns Returns an object of class [H5IdComponent-class] representing a H5
 #' dataspace identifier
+#'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(5)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' sid2 <- H5Aget_space(aid)
+#' H5Sget_simple_extent_dims(sid2)
+#'
+#' H5Sclose(sid2)
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
 #'
 #' @export
 H5Aget_space <- function(h5attribute) {
@@ -226,6 +330,20 @@ H5Aget_space <- function(h5attribute) {
 #'
 #' @param h5attribute An object of class [H5IdComponent-class] representing an
 #' attribute.  Normally created by [H5Aopen()] or similar.
+#'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' tid <- H5Aget_type(aid)
+#' H5Tget_class(tid)
+#'
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
 #'
 #' @export
 H5Aget_type <- function(h5attribute) {
@@ -261,6 +379,20 @@ H5Aget_type <- function(h5attribute) {
 #' @returns If `buf=NULL` returns the contents of the attribute.  Otherwise
 #' return 0 if attribute is read successfully.
 #'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' H5Awrite(aid, 42L)
+#' H5Aread(aid)
+#'
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
+#'
 #' @export
 H5Aread <- function(
   h5attribute,
@@ -292,6 +424,20 @@ H5Aread <- function(
 #' @param h5attribute An object of class [H5IdComponent-class] representing an
 #' attribute.  Normally created by [H5Aopen()] or similar.
 #' @param buf The data to be written.
+#'
+#' @examples
+#' h5File <- tempfile(fileext = ".h5")
+#' fid <- H5Fcreate(h5File)
+#' sid <- H5Screate_simple(1)
+#' aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+#'
+#' H5Awrite(aid, 42L)
+#' H5Aread(aid)
+#'
+#' H5Aclose(aid)
+#' H5Sclose(sid)
+#' H5Fclose(fid)
+#' file.remove(h5File)
 #'
 #' @export
 H5Awrite <- function(h5attribute, buf) {

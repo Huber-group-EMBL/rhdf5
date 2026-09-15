@@ -20,3 +20,18 @@ exists for the object specified by \code{h5obj}.
 \description{
 Check whether an specific attribute exists for an HDF5 object
 }
+\examples{
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+H5Aclose(aid)
+H5Sclose(sid)
+
+H5Aexists(fid, "some_attribute")
+H5Aexists(fid, "not_an_attribute")
+
+H5Fclose(fid)
+file.remove(h5File)
+
+}

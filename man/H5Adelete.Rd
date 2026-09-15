@@ -16,3 +16,19 @@ identifier (file, group, or dataset). See \code{\link[=H5Fcreate]{H5Fcreate()}},
 \description{
 Delete an specified attribute of an HDF5 object
 }
+\examples{
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+H5Aclose(aid)
+H5Sclose(sid)
+
+H5Aexists(fid, "some_attribute")
+H5Adelete(fid, "some_attribute")
+H5Aexists(fid, "some_attribute")
+
+H5Fclose(fid)
+file.remove(h5File)
+
+}

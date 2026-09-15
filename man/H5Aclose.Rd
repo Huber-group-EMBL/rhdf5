@@ -13,6 +13,19 @@ the attribute to be closed.  Normally created by \code{\link[=H5Aopen]{H5Aopen()
 \description{
 Close an HDF5 attribute
 }
+\examples{
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+
+H5Aclose(aid)
+
+H5Sclose(sid)
+H5Fclose(fid)
+file.remove(h5File)
+
+}
 \seealso{
 \code{\link[=H5Aopen]{H5Aopen()}}
 }
