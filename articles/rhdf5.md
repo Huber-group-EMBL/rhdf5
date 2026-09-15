@@ -1051,9 +1051,9 @@ H5Fclose(h5file)
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-06-21 r90185)
+    ## R Under development (unstable) (2026-09-14 r90539)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 24.04.5 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -1072,17 +1072,17 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] rhdf5_2.57.12    BiocStyle_2.41.0
+    ## [1] rhdf5_2.57.13    BiocStyle_2.41.0
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] cli_3.6.6           knitr_1.51          rlang_1.3.0        
+    ##  [1] cli_3.6.6           knitr_1.52          rlang_1.3.0        
     ##  [4] xfun_0.60           otel_0.2.0          textshaping_1.0.5  
     ##  [7] jsonlite_2.0.0      bit_4.6.0           htmltools_0.5.9    
-    ## [10] ragg_1.5.2          sass_0.4.10         rmarkdown_2.31     
+    ## [10] ragg_1.5.2          sass_0.4.10         rmarkdown_2.32     
     ## [13] evaluate_1.0.5      jquerylib_0.1.4     fastmap_1.2.0      
     ## [16] Rhdf5lib_2.1.0      yaml_2.3.12         lifecycle_1.0.5    
-    ## [19] bookdown_0.47       BiocManager_1.30.27 compiler_4.7.0     
+    ## [19] bookdown_0.48       BiocManager_1.30.27 compiler_4.7.0     
     ## [22] fs_2.1.0            rhdf5filters_1.25.4 systemfonts_1.3.2  
     ## [25] digest_0.6.39       R6_2.6.1            bslib_0.12.0       
-    ## [28] bit64_4.8.4         tools_4.7.0         pkgdown_2.2.1      
+    ## [28] bit64_4.8.6         tools_4.7.0         pkgdown_2.2.1      
     ## [31] cachem_1.1.0        desc_1.4.3
