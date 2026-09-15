@@ -127,6 +127,9 @@ H5Lget_info <- function(h5loc, name) {
 #'   location identifier (file or group).
 #' @param name The name of the link to be deleted.
 #'
+#' @returns `0` (invisibly) if the link was deleted, otherwise an error is
+#' raised.
+#'
 #' @examples
 #'
 #' h5file <- tempfile(pattern = "_ex_H5L.h5")

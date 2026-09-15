@@ -7,6 +7,9 @@
 #' @param name For `h5delete` the name of the object to be deleted. For
 #' `h5deleteAttribute` the name of the object to which the attribute
 #' belongs.
+#'
+#' @inherit H5Ldelete return
+#'
 #' @author Mike Smith
 #' @name h5_delete
 #' @export
@@ -36,6 +39,9 @@ h5delete <- function(file, name) {
 #' located.
 #' @param name The name of the object to which the attribute belongs.
 #' @param attribute Name of the attribute to be deleted.
+#'
+#' @returns `TRUE` if the attribute was deleted, `FALSE` if it was not found or
+#' could not be deleted.
 #'
 #' @author Mike Smith
 #' @name h5_deleteAttribute

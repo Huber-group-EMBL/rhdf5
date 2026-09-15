@@ -15,6 +15,10 @@ located.}
 
 \item{attribute}{Name of the attribute to be deleted.}
 }
+\value{
+\code{TRUE} if the attribute was deleted, \code{FALSE} if it was not found or
+could not be deleted.
+}
 \description{
 Deletes an attribute associated with a group or dataset within an HDF5 file.
 }

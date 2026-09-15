@@ -12,6 +12,10 @@ location identifier (file or group).}
 
 \item{name}{The name of the link to be deleted.}
 }
+\value{
+\code{0} (invisibly) if the link was deleted, otherwise an error is
+raised.
+}
 \description{
 Remove a link from a group
 }

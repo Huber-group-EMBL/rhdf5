@@ -15,6 +15,10 @@ located.}
 \code{h5deleteAttribute} the name of the object to which the attribute
 belongs.}
 }
+\value{
+\code{0} (invisibly) if the link was deleted, otherwise an error is
+raised.
+}
 \description{
 Deletes the specified group or dataset from within an HDF5 file.
 }
