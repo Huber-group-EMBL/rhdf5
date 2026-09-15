@@ -50,6 +50,9 @@
       \item \code{h5write(variableLengthString = TRUE)} now properly ignores
       the \code{size} argument, as already documented, instead of incorrectly
       writing a fixed-length string dataset.
+      \item \code{h5read()} no longer crashes when reading variable-length 
+      string datasets with non-continuous indices in \code{index}. Thanks to 
+      Johannes Rainer for the report and reproducible example.
     }
   }
 
