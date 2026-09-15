@@ -27,3 +27,25 @@ H5Adelete(h5obj, name)
 - name:
 
   The name of the attribute (character).
+
+## Examples
+
+``` r
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+H5Aclose(aid)
+H5Sclose(sid)
+
+H5Aexists(fid, "some_attribute")
+#> [1] TRUE
+H5Adelete(fid, "some_attribute")
+#> [1] 0
+H5Aexists(fid, "some_attribute")
+#> [1] FALSE
+
+H5Fclose(fid)
+file.remove(h5File)
+#> [1] TRUE
+```

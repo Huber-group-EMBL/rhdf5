@@ -23,6 +23,11 @@ h5deleteAttribute(file, name, attribute)
 
   Name of the attribute to be deleted.
 
+## Value
+
+`TRUE` if the attribute was deleted, `FALSE` if it was not found or
+could not be deleted.
+
 ## Author
 
 Mike Smith

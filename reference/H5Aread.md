@@ -49,3 +49,22 @@ the 64-bit integers as objects of class 'integer64' as defined in the
 package 'bit64'. Make sure that you have installed 'bit64'. The datatype
 'integer64' is not part of base R, but defined in an external package.
 This can produce unexpected behaviour when working with the data.
+
+## Examples
+
+``` r
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+
+H5Awrite(aid, 42L)
+H5Aread(aid)
+#> [1] 42
+
+H5Aclose(aid)
+H5Sclose(sid)
+H5Fclose(fid)
+file.remove(h5File)
+#> [1] TRUE
+```

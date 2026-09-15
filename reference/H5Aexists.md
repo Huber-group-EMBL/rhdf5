@@ -32,3 +32,23 @@ H5Aexists(h5obj, name)
 
 A logical value indicating whether an attribute with name `name` exists
 for the object specified by `h5obj`.
+
+## Examples
+
+``` r
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+H5Aclose(aid)
+H5Sclose(sid)
+
+H5Aexists(fid, "some_attribute")
+#> [1] TRUE
+H5Aexists(fid, "not_an_attribute")
+#> [1] FALSE
+
+H5Fclose(fid)
+file.remove(h5File)
+#> [1] TRUE
+```

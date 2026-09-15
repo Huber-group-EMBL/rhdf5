@@ -41,4 +41,6 @@ h5constType()[1]
 #> [1] "H5F_ACC"
 h5const(h5constType()[1])
 #> [1] "H5F_ACC_TRUNC" "H5F_ACC_EXCL" 
+h5default(h5constType()[18])
+#> [1] "H5D_COMPACT"
 ```

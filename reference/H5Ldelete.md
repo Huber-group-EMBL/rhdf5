@@ -20,6 +20,10 @@ H5Ldelete(h5loc, name)
 
   The name of the link to be deleted.
 
+## Value
+
+`0` (invisibly) if the link was deleted, otherwise an error is raised.
+
 ## Examples
 
 ``` r

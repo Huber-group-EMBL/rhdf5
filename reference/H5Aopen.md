@@ -60,3 +60,30 @@ H5Aopen_by_idx(
 An object of class
 [H5IdComponent](https://huber-group-embl.github.io/rhdf5/reference/H5IdComponent-class.md)
 representing a H5 attribute identifier.
+
+## Examples
+
+``` r
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+H5Aclose(aid)
+H5Sclose(sid)
+
+## open the attribute by name
+aid <- H5Aopen(fid, "some_attribute")
+H5Aclose(aid)
+
+## open the attribute by name, relative to an object
+aid <- H5Aopen_by_name(fid, objname = ".", name = "some_attribute")
+H5Aclose(aid)
+
+## open the first (n = 0) attribute attached to the object
+aid <- H5Aopen_by_idx(fid, n = 0)
+H5Aclose(aid)
+
+H5Fclose(fid)
+file.remove(h5File)
+#> [1] TRUE
+```

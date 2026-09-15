@@ -51,3 +51,18 @@ H5Acreate(h5obj, name, dtype_id, h5space)
 An object of class
 [H5IdComponent](https://huber-group-embl.github.io/rhdf5/reference/H5IdComponent-class.md)
 representing a H5 attribute identifier.
+
+## Examples
+
+``` r
+h5File <- tempfile(fileext = ".h5")
+fid <- H5Fcreate(h5File)
+sid <- H5Screate_simple(1)
+aid <- H5Acreate(fid, "some_attribute", "H5T_NATIVE_INT", sid)
+
+H5Aclose(aid)
+H5Sclose(sid)
+H5Fclose(fid)
+file.remove(h5File)
+#> [1] TRUE
+```

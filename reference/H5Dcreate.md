@@ -59,3 +59,26 @@ H5Dcreate(
 ## Value
 
 An object of class `H5IdComponent` representing the opened dataset.
+
+## Examples
+
+``` r
+h5file <- tempfile(fileext = ".h5")
+h5createFile(h5file)
+
+fid <- H5Fopen(h5file)
+H5Dcreate(h5loc = fid, name = "A", dtype_id = "H5T_NATIVE_INT", h5space = H5Screate_simple(10))
+did <- H5Dopen(h5loc = fid, name = "A")
+did
+#> HDF5 DATASET 
+#>         name /A
+#>     filename 
+#>         type H5T_STD_I32LE
+#>         rank 1
+#>         size 10
+#>      maxsize 10
+
+## remember to close open handles
+H5Dclose(did)
+H5Fclose(fid)
+```

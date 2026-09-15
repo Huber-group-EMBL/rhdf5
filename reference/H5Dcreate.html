@@ -90,6 +90,29 @@ property list, a dataset creation property list, a dataset access property list<
     <p>An object of class <code>H5IdComponent</code> representing the opened dataset.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">h5file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".h5"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="h5_createFile.html">h5createFile</a></span><span class="op">(</span><span class="va">h5file</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fid</span> <span class="op">&lt;-</span> <span class="fu"><a href="H5Fopen.html">H5Fopen</a></span><span class="op">(</span><span class="va">h5file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">H5Dcreate</span><span class="op">(</span>h5loc <span class="op">=</span> <span class="va">fid</span>, name <span class="op">=</span> <span class="st">"A"</span>, dtype_id <span class="op">=</span> <span class="st">"H5T_NATIVE_INT"</span>, h5space <span class="op">=</span> <span class="fu"><a href="H5Screate_simple.html">H5Screate_simple</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">did</span> <span class="op">&lt;-</span> <span class="fu"><a href="H5Dopen.html">H5Dopen</a></span><span class="op">(</span>h5loc <span class="op">=</span> <span class="va">fid</span>, name <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">did</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> HDF5 DATASET </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         name /A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     filename </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         type H5T_STD_I32LE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rank 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         size 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      maxsize 10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## remember to close open handles</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="H5Dclose.html">H5Dclose</a></span><span class="op">(</span><span class="va">did</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="H5Fclose.html">H5Fclose</a></span><span class="op">(</span><span class="va">fid</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
