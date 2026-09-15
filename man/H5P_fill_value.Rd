@@ -3,18 +3,41 @@
 \name{H5P_fill_value}
 \alias{H5P_fill_value}
 \alias{H5Pset_fill_value}
+\alias{H5Pget_fill_value}
 \title{Set the fill value for an HDF5 dataset}
 \usage{
-H5Pset_fill_value(h5plist, value)
+H5Pset_fill_value(h5plist, value, size = nchar(value, type = "bytes"))
+
+H5Pget_fill_value(h5plist, dtype)
 }
 \arguments{
 \item{h5plist}{An object of class \link[=H5IdComponent-class]{H5IdComponent} representing a
 dataset creation property list.}
 
 \item{value}{The default fill value of the dataset. A vector of length 1.}
+
+\item{dtype}{The identifier of the dataset's datatype, as returned by
+\code{\link[=H5Dget_type]{H5Dget_type()}}. This is used to determine how the fill value should
+be interpreted and returned; it should match the datatype that was
+used when the fill value was originally set with
+\code{H5Pset_fill_value()}.}
+}
+\value{
+\code{H5Pget_fill_value} returns the fill value stored in the
+property list, coerced to an appropriate R type.  Returns \code{NULL} if
+the fill value could not be retrieved.
 }
 \description{
 \code{H5Pset_fill_value} sets the fill value for a dataset in the dataset creation property list.
+}
+\examples{
+## numeric fill value
+dcpl <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_fill_value(dcpl, 42.5)
+tid <- H5Tcopy("H5T_IEEE_F64LE")
+H5Pget_fill_value(dcpl, tid)
+H5Pclose(dcpl)
+
 }
 \seealso{
 \link{H5P_fill_time},\link{H5Pfill_value_defined}

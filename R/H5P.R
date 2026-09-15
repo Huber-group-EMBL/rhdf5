@@ -527,6 +527,15 @@ H5Pset_deflate <- function(h5plist, level) {
 #' @seealso [H5P_fill_time],[H5Pfill_value_defined]
 #'
 #' @name H5P_fill_value
+#'
+#' @examples
+#' ## numeric fill value
+#' dcpl <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_fill_value(dcpl, 42.5)
+#' tid <- H5Tcopy("H5T_IEEE_F64LE")
+#' H5Pget_fill_value(dcpl, tid)
+#' H5Pclose(dcpl)
+#'
 NULL
 
 #' @rdname H5P_fill_value
@@ -566,6 +575,25 @@ H5Pset_fill_value <- function(h5plist, value) {
   )
   res <- .Call("_H5Pset_fill_value", h5plist@ID, tid, value, PACKAGE = "rhdf5")
   invisible(res)
+}
+
+#' @rdname H5P_fill_value
+#'
+#' @param dtype The identifier of the dataset's datatype, as returned by
+#'   [H5Dget_type()]. This is used to determine how the fill value should
+#'   be interpreted and returned; it should match the datatype that was
+#'   used when the fill value was originally set with
+#'   `H5Pset_fill_value()`.
+#'
+#' @returns `H5Pget_fill_value` returns the fill value stored in the
+#'   property list, coerced to an appropriate R type.  Returns `NULL` if
+#'   the fill value could not be retrieved.
+#'
+#' @export
+H5Pget_fill_value <- function(h5plist, dtype) {
+  h5checktypeAndPLC(h5plist, "H5P_DATASET_CREATE")
+  res <- .Call("_H5Pget_fill_value", h5plist@ID, dtype, PACKAGE = "rhdf5")
+  res
 }
 
 #' Determine whether a property list has a fill value defined
