@@ -46,13 +46,9 @@ H5Screate <- function(type = h5default("H5S"), native = FALSE) {
 #' @seealso [H5Screate]
 #'
 #' @export
-H5Screate_simple <- function(dims, maxdims, native = FALSE) {
+H5Screate_simple <- function(dims, maxdims = dims, native = FALSE) {
   dims <- as.numeric(dims)
-  if (missing(maxdims)) {
-    maxdims <- dims
-  } else {
-    maxdims <- as.numeric(maxdims)
-  }
+  maxdims <- as.numeric(maxdims)
   if (!native) {
     dims <- rev(dims)
     maxdims <- rev(maxdims)
@@ -149,15 +145,11 @@ H5Sget_simple_extent_dims <- function(h5space) {
 #' one.
 #'
 #' @export
-H5Sset_extent_simple <- function(h5space, dims, maxdims) {
+H5Sset_extent_simple <- function(h5space, dims, maxdims = dims) {
   h5checktype(h5space, "dataspace")
 
   dims <- as.numeric(dims)
-  if (missing(maxdims)) {
-    maxdims <- dims
-  } else {
-    maxdims <- as.numeric(maxdims)
-  }
+  maxdims <- as.numeric(maxdims)
 
   if (!h5space@native) {
     dims <- rev(dims)
