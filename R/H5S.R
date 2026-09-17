@@ -307,45 +307,35 @@ H5Sselect_hyperslab <- function(
 
   dims <- H5Sget_simple_extent_dims(h5space)
   R <- dims$rank
-  if (is.null(start)) {
-    start <- rep(1, R)
-  } else {
-    if (length(start) != R) {
-      stop(sprintf(
-        "start must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+
+  start <- start %||% rep(1, R)
+  stride <- stride %||% rep(1, R)
+  count <- count %||% dims$size
+  block <- block %||% rep(1, R)
+
+  if (length(start) != R) {
+    stop(sprintf(
+      "start must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
-  if (is.null(stride)) {
-    stride <- rep(1, R)
-  } else {
-    if (length(stride) != R) {
-      stop(sprintf(
-        "stride must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+  if (length(stride) != R) {
+    stop(sprintf(
+      "stride must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
-  if (is.null(count)) {
-    count <- dims$size
-  } else {
-    if (length(count) != R) {
-      stop(sprintf(
-        "count must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+  if (length(count) != R) {
+    stop(sprintf(
+      "count must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
-  if (is.null(block)) {
-    block <- rep(1, R)
-  } else {
-    if (length(block) != R) {
-      stop(sprintf(
-        "block must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+  if (length(block) != R) {
+    stop(sprintf(
+      "block must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
 
   count <- as.numeric(count)
@@ -439,45 +429,35 @@ H5Scombine_hyperslab <- function(
 
   dims <- H5Sget_simple_extent_dims(h5space)
   R <- dims$rank
-  if (is.null(start)) {
-    start <- rep(1, R)
-  } else {
-    if (length(start) != R) {
-      stop(sprintf(
-        "start must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+
+  start <- start %||% rep(1, R)
+  stride <- stride %||% rep(1, R)
+  count <- count %||% dims$size
+  block <- block %||% rep(1, R)
+
+  if (length(start) != R) {
+    stop(sprintf(
+      "start must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
-  if (is.null(stride)) {
-    stride <- rep(1, R)
-  } else {
-    if (length(stride) != R) {
-      stop(sprintf(
-        "stride must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+  if (length(stride) != R) {
+    stop(sprintf(
+      "stride must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
-  if (is.null(count)) {
-    count <- dims$size
-  } else {
-    if (length(count) != R) {
-      stop(sprintf(
-        "count must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+  if (length(count) != R) {
+    stop(sprintf(
+      "count must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
-  if (is.null(block)) {
-    block <- rep(1, R)
-  } else {
-    if (length(block) != R) {
-      stop(sprintf(
-        "block must either be NULL or have length %d (rank of dataspace)",
-        R
-      ))
-    }
+  if (length(block) != R) {
+    stop(sprintf(
+      "block must either be NULL or have length %d (rank of dataspace)",
+      R
+    ))
   }
 
   count <- as.numeric(count)
