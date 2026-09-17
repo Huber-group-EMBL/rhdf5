@@ -391,29 +391,11 @@ h5writeDataset.array <- function(
     h5dataset <- H5Dopen(h5loc, name)
     on.exit(H5Dclose(h5dataset))
     type <- H5Dget_type(h5dataset)
-    fixedLengthString <- storage.mode(obj) == "character" &&
-      !H5Tis_variable_str(type)
-    if (fixedLengthString && anyNA(obj)) {
-      warning(
-        "Writing NA_character_ in fixed-length string datasets is fragile ",
-        "and deprecated.\n",
-        "In particular, it will write NA_character_ as the string 'NA' in ",
-        "the HDF5 file.\n",
-        "Use variable-length strings instead."
-      )
-    }
+    is_fixed_size_str <- H5Tget_class(type) == "H5T_STRING" &&
+                         !H5Tis_variable_str(type)
   } else {
     if (storage.mode(obj) == "character") {
-      if (!variableLengthString && anyNA(obj)) {
-        warning(
-          "Writing NA_character_ in fixed-length string datasets is fragile ",
-          "and deprecated.\n",
-          "In particular, it will write NA_character_ as the string 'NA' in ",
-          "the HDF5 file.\n",
-          "Use `variableLengthString=TRUE` to write the data as ",
-          "variable-length strings instead."
-        )
-      }
+      is_fixed_size_str <- !variableLengthString
       if (variableLengthString && !is.null(size)) {
         warning(
           "Argument `size` is ignored when `variableLengthString=TRUE`."
@@ -468,8 +450,17 @@ h5writeDataset.array <- function(
   )
   h5writeAttribute(1L, h5dataset, name = "rhdf5-NA.OK")
 
-  if (!variableLengthString && anyNA(obj)) {
+  if (is_fixed_size_str && anyNA(obj)) {
     # THIS WILL BE REMOVED IN THE NEXT RELEASE!
+    what <- if (exists) ""
+            else "`variableLengthString=TRUE` to write the data as "
+    warning(
+      "Writing NA_character_ in fixed-length string datasets is fragile ",
+      "and deprecated.\n",
+      "In particular, it will write NA_character_ as the string 'NA' in ",
+      "the HDF5 file.\n",
+      "Use ", what, "variable-length strings instead."
+    )
     h5writeAttribute(1L, h5dataset, name = "as.na")
   }
 
