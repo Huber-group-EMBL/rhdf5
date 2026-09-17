@@ -39,12 +39,14 @@ test_that("Precision can be modified", {
 
   expect_error(
     H5Tget_precision(),
-    regexp = "Argument 'dtype_id' must be supplied",
+    "dtype_id",
+    class = "missingArgError",
     fixed = TRUE
   )
   expect_error(
-    H5Tset_precision(),
-    regexp = "Argument 'dtype_id' must be supplied",
+    H5Tset_precision(precision = 1),
+    "dtype_id",
+    class = "missingArgError",
     fixed = TRUE
   )
   expect_error(
