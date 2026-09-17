@@ -312,6 +312,7 @@ test_that("Writing NA_character_ as fixed-length string is deprecated", {
     "Writing NA_character_ in fixed-length string datasets is fragile and deprecated"
   )
   H5Fclose(fid)
+  expect_equal(as.vector(h5readAttributes(h5File, "fixed_string")$as.na), 1)
 
   # Works also if the dataset is created with h5createDataset() first
   fid <- H5Fcreate(name = h5File)
@@ -331,6 +332,7 @@ test_that("Writing NA_character_ as fixed-length string is deprecated", {
     "Writing NA_character_ in fixed-length string datasets is fragile and deprecated"
   )
   H5Fclose(fid)
+  expect_equal(as.vector(h5readAttributes(h5File, "fixed_string2")$as.na), 1)
 })
 
 test_that("No NA_character_ warning for non-character datasets", {

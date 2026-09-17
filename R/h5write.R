@@ -394,8 +394,9 @@ h5writeDataset.array <- function(
     is_fixed_size_str <- H5Tget_class(type) == "H5T_STRING" &&
                          !H5Tis_variable_str(type)
   } else {
+    is_fixed_size_str <- storage.mode(obj) == "character" &&
+                         !variableLengthString
     if (storage.mode(obj) == "character") {
-      is_fixed_size_str <- !variableLengthString
       if (variableLengthString && !is.null(size)) {
         warning(
           "Argument `size` is ignored when `variableLengthString=TRUE`."
