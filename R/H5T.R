@@ -69,10 +69,6 @@ H5Tset_size <- function(dtype_id = h5default(type = "H5T"), size) {
 #' H5Tset_size(tid, 3)
 #' H5Tget_size(tid)
 H5Tget_size <- function(dtype_id) {
-  if (missing(dtype_id)) {
-    stop("Argument 'dtype_id' must be supplied")
-  }
-
   .Call("_H5Tget_size", dtype_id, PACKAGE = "rhdf5")
 }
 
@@ -112,10 +108,6 @@ H5Tset_strpad <- function(dtype_id, strpad = "NULLPAD") {
 #' @rdname H5T_strpad
 #' @export
 H5Tget_strpad <- function(dtype_id) {
-  if (missing(dtype_id)) {
-    stop("Argument 'dtype_id' must be supplied")
-  }
-
   .Call("_H5Tget_strpad", dtype_id, PACKAGE = "rhdf5")
 }
 
@@ -155,10 +147,6 @@ H5Tset_cset <- function(dtype_id, cset = "ASCII") {
 #' @rdname H5T_cset
 #' @export
 H5Tget_cset <- function(dtype_id) {
-  if (missing(dtype_id)) {
-    stop("Argument 'dtype_id' must be supplied")
-  }
-
   .Call("_H5Tget_cset", dtype_id, PACKAGE = "rhdf5")
 }
 
@@ -173,10 +161,6 @@ H5Tget_cset <- function(dtype_id) {
 #' H5Tset_size(tid, 3)
 #' H5Tis_variable_str(tid)
 H5Tis_variable_str <- function(dtype_id) {
-  if (missing(dtype_id)) {
-    stop("Argument 'dtype_id' must be supplied")
-  }
-
   res <- .Call("_H5Tis_variable_str", dtype_id, PACKAGE = "rhdf5")
   if (res < 0) {
     stop("Unable to determine whether datatype is a variable length string")
@@ -209,10 +193,6 @@ NULL
 #' @rdname H5T_precision
 #' @export
 H5Tset_precision <- function(dtype_id, precision) {
-  if (missing(dtype_id)) {
-    stop("Argument 'dtype_id' must be supplied")
-  }
-
   precision <- as.integer(precision)
   if (precision < 1) {
     stop("'precision' argument must be greater than 0.")
@@ -234,13 +214,7 @@ H5Tset_precision <- function(dtype_id, precision) {
 #' @rdname H5T_precision
 #' @export
 H5Tget_precision <- function(dtype_id) {
-  if (missing(dtype_id)) {
-    stop("Argument 'dtype_id' must be supplied")
-  }
-
-  precision <- .Call("_H5Tget_precision", dtype_id, PACKAGE = "rhdf5")
-
-  return(precision)
+  .Call("_H5Tget_precision", dtype_id, PACKAGE = "rhdf5")
 }
 
 #' Create or modify an HDF5 enum datatype
@@ -315,8 +289,7 @@ NULL
 #' @rdname H5T_ops
 #' @export
 H5Tget_class <- function(dtype_id) {
-  type <- .Call("_H5Tget_class", dtype_id, PACKAGE = "rhdf5")
-  return(type)
+  .Call("_H5Tget_class", dtype_id, PACKAGE = "rhdf5")
 }
 
 #' @rdname H5T_ops
