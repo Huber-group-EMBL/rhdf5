@@ -11,15 +11,9 @@
 H5Pcreate <- function(type = h5default("H5P")) {
   type <- h5checkConstants("H5P", type)
   pid <- .Call("_H5Pcreate", type, PACKAGE = "rhdf5")
-  if (pid > 0) {
-    # The native argument has no effect in this case. So we set it to FALSE
-    # but the actual value doesn't really matter.
-    h5plist <- new("H5IdComponent", ID = pid, native = FALSE)
-  } else {
-    message("HDF5: unable to create property list")
-    h5plist <- FALSE
-  }
-  invisible(h5plist)
+  # The native argument has no effect in this case. So we set it to FALSE
+  # but the actual value doesn't really matter.
+  invisible(.wrapH5Id(pid, native = FALSE, what = "create property list"))
 }
 
 #' Return the property list class identifier for a property list
@@ -31,13 +25,11 @@ H5Pcreate <- function(type = h5default("H5P")) {
 H5Pget_class <- function(h5plist) {
   h5checktype(h5plist, "plist")
   pclid <- .Call("_H5Pget_class", h5plist@ID, PACKAGE = "rhdf5")
-  if (pclid > 0) {
-    h5plistclass <- new("H5IdComponent", ID = pclid, native = h5plist@native)
-  } else {
-    message("HDF5: unable to get property list class")
-    h5plistclass <- FALSE
-  }
-  invisible(h5plistclass)
+  invisible(.wrapH5Id(
+    pclid,
+    native = h5plist@native,
+    what = "get property list class"
+  ))
 }
 
 #' Copy an existing property list to create a new property list
@@ -49,13 +41,11 @@ H5Pget_class <- function(h5plist) {
 H5Pcopy <- function(h5plist) {
   h5checktype(h5plist, "plist")
   pid <- .Call("_H5Pcopy", h5plist@ID, PACKAGE = "rhdf5")
-  if (pid > 0) {
-    h5plistnew <- new("H5IdComponent", ID = pid, native = h5plist@native)
-  } else {
-    message("HDF5: unable to copy property list")
-    h5plistnew <- FALSE
-  }
-  invisible(h5plistnew)
+  invisible(.wrapH5Id(
+    pid,
+    native = h5plist@native,
+    what = "copy property list"
+  ))
 }
 
 #' Close and release a property list

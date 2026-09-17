@@ -17,13 +17,7 @@
 H5Screate <- function(type = h5default("H5S"), native = FALSE) {
   type <- h5checkConstants("H5S", type)
   sid <- .Call("_H5Screate", type, PACKAGE = "rhdf5")
-  if (sid > 0) {
-    h5space <- new("H5IdComponent", ID = sid, native = native)
-  } else {
-    message("HDF5: unable to create data space")
-    h5space <- FALSE
-  }
-  invisible(h5space)
+  invisible(.wrapH5Id(sid, native = native, what = "create data space"))
 }
 
 
@@ -54,13 +48,7 @@ H5Screate_simple <- function(dims, maxdims = dims, native = FALSE) {
     maxdims <- rev(maxdims)
   }
   sid <- .Call("_H5Screate_simple", dims, maxdims, PACKAGE = "rhdf5")
-  if (sid > 0) {
-    h5space <- new("H5IdComponent", ID = sid, native = native)
-  } else {
-    message("HDF5: unable to create simple data space")
-    h5space <- FALSE
-  }
-  invisible(h5space)
+  invisible(.wrapH5Id(sid, native = native, what = "create simple data space"))
 }
 
 #' Close and release a dataspace
@@ -91,13 +79,7 @@ H5Sclose <- function(h5space) {
 H5Scopy <- function(h5space) {
   h5checktype(h5space, "dataspace")
   sid <- .Call("_H5Scopy", h5space@ID, PACKAGE = "rhdf5")
-  if (sid > 0) {
-    h5spacenew <- new("H5IdComponent", ID = sid, native = h5space@native)
-  } else {
-    message("HDF5: unable to copy data space")
-    h5spacenew <- FALSE
-  }
-  invisible(h5spacenew)
+  invisible(.wrapH5Id(sid, native = h5space@native, what = "copy data space"))
 }
 
 
@@ -481,14 +463,11 @@ H5Scombine_hyperslab <- function(
     block,
     PACKAGE = "rhdf5"
   )
-  if (sid > 0) {
-    h5spacenew <- new("H5IdComponent", ID = sid, native = h5space@native)
-  } else {
-    message("HDF5: error combining hyperslabs")
-    h5spacenew <- FALSE
-  }
-
-  invisible(h5spacenew)
+  invisible(.wrapH5Id(
+    sid,
+    native = h5space@native,
+    what = "combine hyperslabs"
+  ))
 }
 
 #' Combine two selections
@@ -555,13 +534,11 @@ H5Scombine_select <- function(
 
   sid <- .Call("_H5Scombine_select", h5space1@ID, op, h5space2@ID)
 
-  if (sid > 0) {
-    h5spacenew <- new("H5IdComponent", ID = sid, native = h5space1@native)
-  } else {
-    message("HDF5: unable to copy data space")
-    h5spacenew <- FALSE
-  }
-  invisible(h5spacenew)
+  invisible(.wrapH5Id(
+    sid,
+    native = h5space1@native,
+    what = "combine selections"
+  ))
 }
 
 #' Retrieve value for `H5S_UNLIMITED` constant

@@ -49,13 +49,7 @@ H5Fcreate <- function(
   }
   fapl <- h5checktypeAndPLC(fapl, "H5P_FILE_ACCESS", allowNULL = TRUE)
   fid <- .Call("_H5Fcreate", name, flags, fcpl@ID, fapl@ID, PACKAGE = "rhdf5")
-  if (fid > 0) {
-    h5file <- new("H5IdComponent", ID = fid, native = native)
-  } else {
-    message("HDF5: unable to create file")
-    h5file <- FALSE
-  }
-  invisible(h5file)
+  invisible(.wrapH5Id(fid, native, "create file"))
 }
 
 #' Open an existing HDF5 file
@@ -109,13 +103,7 @@ H5Fopen <- function(
     }
   }
   fid <- .Call("_H5Fopen", name, flags, fapl@ID, PACKAGE = "rhdf5")
-  if (fid > 0) {
-    h5file <- new("H5IdComponent", ID = fid, native = native)
-  } else {
-    message("HDF5: unable to open file")
-    h5file <- FALSE
-  }
-  invisible(h5file)
+  invisible(.wrapH5Id(fid, native, "open file"))
 }
 
 
@@ -221,13 +209,7 @@ H5Fget_filesize <- function(h5file) {
 H5Fget_create_plist <- function(h5file) {
   h5checktype(h5file, "file")
   pid <- .Call("_H5Fget_create_plist", h5file@ID, PACKAGE = "rhdf5")
-  if (pid > 0) {
-    h5plist <- new("H5IdComponent", ID = pid, native = h5file@native)
-  } else {
-    message("HDF5: unable to create property list")
-    h5plist <- FALSE
-  }
-  invisible(h5plist)
+  invisible(.wrapH5Id(pid, h5file@native, "create property list"))
 }
 
 #' @rdname H5Fget_plist
@@ -235,13 +217,7 @@ H5Fget_create_plist <- function(h5file) {
 H5Fget_access_plist <- function(h5file) {
   h5checktype(h5file, "file")
   pid <- .Call("_H5Fget_access_plist", h5file@ID, PACKAGE = "rhdf5")
-  if (pid > 0) {
-    h5plist <- new("H5IdComponent", ID = pid, native = h5file@native)
-  } else {
-    message("HDF5: unable to create property list")
-    h5plist <- FALSE
-  }
-  invisible(h5plist)
+  invisible(.wrapH5Id(pid, h5file@native, "create property list"))
 }
 
 #' Determine the read only or read/write status of an open file handle.

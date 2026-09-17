@@ -61,13 +61,7 @@ H5Dcreate <- function(
     dapl@ID,
     PACKAGE = "rhdf5"
   )
-  if (did > 0) {
-    h5dataset <- new("H5IdComponent", ID = did, native = h5loc@native)
-  } else {
-    message("HDF5: unable to create dataset")
-    h5dataset <- FALSE
-  }
-  invisible(h5dataset)
+  invisible(.wrapH5Id(did, h5loc@native, "create dataset"))
 }
 
 #' Open an existing HDF5 dataset
@@ -102,13 +96,7 @@ H5Dopen <- function(h5loc, name, dapl = NULL) {
   }
   dapl <- h5checktypeAndPLC(dapl, "H5P_DATASET_ACCESS", allowNULL = TRUE)
   did <- .Call("_H5Dopen", h5loc@ID, name, dapl@ID, PACKAGE = "rhdf5")
-  if (as.numeric(did) > 0) {
-    h5dataset <- new("H5IdComponent", ID = did, native = h5loc@native)
-  } else {
-    message("HDF5: unable to open dataset")
-    h5dataset <- FALSE
-  }
-  invisible(h5dataset)
+  invisible(.wrapH5Id(did, h5loc@native, "open dataset"))
 }
 
 #' Close an open HDF5 dataset
@@ -165,13 +153,7 @@ H5Dget_type <- function(h5dataset) {
 H5Dget_create_plist <- function(h5dataset) {
   h5checktype(h5dataset, "dataset")
   pid <- .Call("_H5Dget_create_plist", h5dataset@ID, PACKAGE = "rhdf5")
-  if (pid > 0) {
-    h5plist <- new("H5IdComponent", ID = pid, native = h5dataset@native)
-  } else {
-    message("HDF5: unable to create property list")
-    h5plist <- FALSE
-  }
-  invisible(h5plist)
+  invisible(.wrapH5Id(pid, h5dataset@native, "create property list"))
 }
 
 
@@ -196,13 +178,7 @@ H5Dget_create_plist <- function(h5dataset) {
 H5Dget_space <- function(h5dataset) {
   h5checktype(h5dataset, "dataset")
   sid <- .Call("_H5Dget_space", h5dataset@ID, PACKAGE = "rhdf5")
-  if (sid > 0) {
-    h5space <- new("H5IdComponent", ID = sid, native = h5dataset@native)
-  } else {
-    message("HDF5: unable to create simple data space")
-    h5space <- FALSE
-  }
-  invisible(h5space)
+  invisible(.wrapH5Id(sid, h5dataset@native, "create simple data space"))
 }
 
 #' Find the amount of storage allocated for a dataset

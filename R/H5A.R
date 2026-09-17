@@ -46,13 +46,7 @@ H5Acreate <- function(h5obj, name, dtype_id, h5space) {
     h5space@ID,
     PACKAGE = "rhdf5"
   )
-  if (aid > 0) {
-    h5attribute <- new("H5IdComponent", ID = aid, native = h5obj@native)
-  } else {
-    message("HDF5: unable to create attribute")
-    h5attribute <- FALSE
-  }
-  invisible(h5attribute)
+  invisible(.wrapH5Id(aid, h5obj@native, "create attribute"))
 }
 
 #' Open an attribute for an HDF5 object
@@ -103,13 +97,7 @@ H5Aopen <- function(h5obj, name) {
     stop("'name' must be a character string of length 1")
   }
   aid <- .Call("_H5Aopen", h5obj@ID, name, PACKAGE = "rhdf5")
-  if (aid > 0) {
-    h5attribute <- new("H5IdComponent", ID = aid, native = h5obj@native)
-  } else {
-    message("HDF5: unable to open attribute")
-    h5attribute <- FALSE
-  }
-  invisible(h5attribute)
+  invisible(.wrapH5Id(aid, h5obj@native, "open attribute"))
 }
 
 #' @rdname H5Aopen
@@ -123,13 +111,7 @@ H5Aopen_by_name <- function(h5obj, objname = ".", name) {
     stop("'name' must be a character string of length 1")
   }
   aid <- .Call("_H5Aopen_by_name", h5obj@ID, objname, name, PACKAGE = "rhdf5")
-  if (aid > 0) {
-    h5attribute <- new("H5IdComponent", ID = aid, native = h5obj@native)
-  } else {
-    message("HDF5: unable to open attribute")
-    h5attribute <- FALSE
-  }
-  invisible(h5attribute)
+  invisible(.wrapH5Id(aid, h5obj@native, "open attribute"))
 }
 
 #' @rdname H5Aopen
@@ -160,13 +142,7 @@ H5Aopen_by_idx <- function(
     n,
     PACKAGE = "rhdf5"
   )
-  if (aid > 0) {
-    h5attribute <- new("H5IdComponent", ID = aid, native = h5obj@native)
-  } else {
-    message("HDF5: unable to open attribute")
-    h5attribute <- FALSE
-  }
-  invisible(h5attribute)
+  invisible(.wrapH5Id(aid, h5obj@native, "open attribute"))
 }
 
 #' Check whether an specific attribute exists for an HDF5 object
@@ -317,13 +293,7 @@ H5Aget_name <- function(h5attribute) {
 H5Aget_space <- function(h5attribute) {
   h5checktype(h5attribute, "attribute")
   sid <- .Call("_H5Aget_space", h5attribute@ID, PACKAGE = "rhdf5")
-  if (sid > 0) {
-    h5space <- new("H5IdComponent", ID = sid, native = h5attribute@native)
-  } else {
-    message("HDF5: unable to create simple data space")
-    h5space <- FALSE
-  }
-  invisible(h5space)
+  invisible(.wrapH5Id(sid, h5attribute@native, "create simple data space"))
 }
 
 #' Get a copy of the attribute datatype
