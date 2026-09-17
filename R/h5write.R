@@ -391,12 +391,12 @@ h5writeDataset.array <- function(
     h5dataset <- H5Dopen(h5loc, name)
     on.exit(H5Dclose(h5dataset))
     type <- H5Dget_type(h5dataset)
-    is_fixed_size_str <- H5Tget_class(type) == "H5T_STRING" &&
-                         !H5Tis_variable_str(type)
+    is_fixed_size_str <-
+      H5Tget_class(type) == "H5T_STRING" && !H5Tis_variable_str(type)
   } else {
-    is_fixed_size_str <- storage.mode(obj) == "character" &&
-                         !variableLengthString
+    is_fixed_size_str <- FALSE
     if (storage.mode(obj) == "character") {
+      is_fixed_size_str <- !variableLengthString
       if (variableLengthString && !is.null(size)) {
         warning(
           "Argument `size` is ignored when `variableLengthString=TRUE`."
@@ -453,8 +453,8 @@ h5writeDataset.array <- function(
 
   if (is_fixed_size_str && anyNA(obj)) {
     # THIS WILL BE REMOVED IN THE NEXT RELEASE!
-    what <- if (exists) ""
-            else "`variableLengthString=TRUE` to write the data as "
+    what <-
+      if (exists) "" else "`variableLengthString=TRUE` to write the data as "
     warning(
       "Writing NA_character_ in fixed-length string datasets is fragile ",
       "and deprecated.\n",
