@@ -102,7 +102,13 @@ h5createGroup <- function(file, group) {
   invisible(res)
 }
 
-.setDataType <- function(H5type, storage.mode, size, encoding) {
+.setDataType <- function(
+  H5type,
+  storage.mode,
+  size,
+  encoding,
+  logical_as = c("enum", "integer")
+) {
   if (is.null(H5type)) {
     if (!is.character(storage.mode)) {
       stop("Can not create dataset. 'storage.mode' has to be a character.")
@@ -112,9 +118,28 @@ h5createGroup <- function(file, group) {
       double = h5constants$H5T["H5T_IEEE_F64LE"],
       integer = h5constants$H5T["H5T_STD_I32LE"],
       integer64 = h5constants$H5T["H5T_STD_I64LE"],
-      logical = h5constants$H5T["H5T_STD_I8LE"],
+      logical = {
+        # FIXME: due to a historical hiccup, logicals are stored as integers in
+        # datasets and enums in attributes. Harmonize this at some point.
+        # See https://github.com/Huber-group-EMBL/rhdf5/issues/162 for some
+        # discussion on this.
+        if (logical_as == "integer") {
+          h5constants$H5T["H5T_STD_I8LE"]
+        } else {
+          tid <- H5Tenum_create(dtype_id = "H5T_NATIVE_UCHAR")
+          H5Tenum_insert(tid, name = "TRUE", value = 1L)
+          H5Tenum_insert(tid, name = "FALSE", value = 0L)
+          H5Tenum_insert(tid, name = "NA", value = 255L)
+          tid
+        }
+      },
       raw = h5constants$H5T["H5T_STD_U8LE"],
       character = {
+        if (!is.null(size) && !is.numeric(size)) {
+          stop(
+            "'size' should be NULL or a number when 'storage.mode=\"character\"'"
+          )
+        }
         tid <- H5Tcopy("H5T_C_S1")
         H5Tset_strpad(tid, strpad = "NULLPAD")
         H5Tset_size(tid, size)
@@ -126,6 +151,8 @@ h5createGroup <- function(file, group) {
         tid <- .Call("_h5createComplexDataType", PACKAGE = "rhdf5")
         tid
       },
+      # Comes from h5writeAttribute.array()
+      H5IdComponent = h5constants$H5T["H5T_STD_REF_OBJ"],
       {
         stop(
           "datatype ",
@@ -507,7 +534,8 @@ h5createDataset <- function(
     H5type,
     storage.mode,
     size,
-    encoding = encoding
+    encoding = encoding,
+    logical_as = "integer"
   )
 
   dcpl <- .createDCPL(
@@ -624,59 +652,13 @@ h5createAttribute <- function(
   # FIXME: Ultimately, this should be replaced by a call to .setDataType()
   # but this would be a breaking change as .setDataType() and the code here
   # treat logical differently.
-  # See https://github.com/Huber-group-EMBL/rhdf5/issues/162 for some
-  # discussion on this.
-  if (is.null(H5type)) {
-    if (!is.character(storage.mode)) {
-      stop("Can not create dataset. 'storage.mode' has to be a character.")
-    }
-    tid <- switch(
-      storage.mode[1],
-      double = h5constants$H5T["H5T_IEEE_F64LE"],
-      integer = h5constants$H5T["H5T_STD_I32LE"],
-      character = {
-        tid <- H5Tcopy("H5T_C_S1")
-        H5Tset_cset(
-          tid,
-          cset = encoding
-        )
-        if (!is.null(size) && !is.numeric(size)) {
-          stop(
-            "'size' should be NULL or a number when 'storage.mode=\"character\"'"
-          )
-        }
-        H5Tset_size(tid, size) # NULL = variable.
-        tid
-      },
-      logical = {
-        tid <- H5Tenum_create(dtype_id = "H5T_NATIVE_UCHAR")
-        H5Tenum_insert(tid, name = "TRUE", value = 1L)
-        H5Tenum_insert(tid, name = "FALSE", value = 0L)
-        H5Tenum_insert(tid, name = "NA", value = 255L)
-        tid
-      },
-      H5IdComponent = h5constants$H5T["H5T_STD_REF_OBJ"],
-      {
-        stop(
-          "datatype ",
-          storage.mode,
-          " not yet implemented. Try 'double', 'integer', or 'character'."
-        )
-      }
-    )
-  } else {
-    if (.isResolvedTypeId(H5type)) {
-      tid <- H5type
-    } else {
-      tid <- h5checkConstants("H5T", H5type)
-    }
-  }
-  if (is.na(tid)) {
-    message(
-      "Can not create attribute. H5type unknown. Check h5const('H5T') for valid types."
-    )
-    return(FALSE)
-  }
+  tid <- .setDataType(
+    H5type,
+    storage.mode,
+    size,
+    encoding = encoding,
+    logical_as = "enum"
+  )
 
   if (H5Aexists(obj$H5Identifier, attr)) {
     message(
