@@ -55,7 +55,7 @@ NULL
 #' H5Tget_size(tid)
 H5Tset_size <- function(dtype_id = h5default(type = "H5T"), size) {
   # string constant type_id do not make sense, because they are not allowed to be changed
-  if (!grepl(pattern = "^[[:digit:]]+$", dtype_id)) {
+  if (!.isResolvedTypeId(dtype_id)) {
     stop("Argument 'dtype_id' should be created by a call to H5Tcopy()")
   }
   size <- as.integer(size)

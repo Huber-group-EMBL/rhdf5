@@ -18,3 +18,18 @@
     FALSE
   }
 }
+
+#' Determine whether a datatype identifier has already been resolved
+#'
+#' HDF5 datatypes can be passed either as a character constant (e.g.
+#' `"H5T_NATIVE_INT"`) or as an integer identifier that has already been
+#' resolved to a numeric string. This checks for the latter case.
+#'
+#' @param dtype_id The datatype identifier to check.
+#'
+#' @returns `TRUE` if `dtype_id` looks like an already-resolved numeric
+#'   identifier, `FALSE` otherwise.
+#' @noRd
+.isResolvedTypeId <- function(dtype_id) {
+  grepl(pattern = "^[[:digit:]]+$", dtype_id)
+}

@@ -34,7 +34,7 @@ H5Acreate <- function(h5obj, name, dtype_id, h5space) {
     stop("'name' must be a character string of length 1")
   }
   ## dont check if we have an H5T identifier already
-  if (!grepl(pattern = "^[[:digit:]]+$", dtype_id)) {
+  if (!.isResolvedTypeId(dtype_id)) {
     dtype_id <- h5checkConstants("H5T", dtype_id)
   }
   h5checktype(h5space, "dataspace")

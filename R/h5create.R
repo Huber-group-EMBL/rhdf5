@@ -136,7 +136,7 @@ h5createGroup <- function(file, group) {
       }
     )
   } else {
-    if (grepl(pattern = "^[[:digit:]]+$", H5type)) {
+    if (.isResolvedTypeId(H5type)) {
       tid <- H5type
     } else {
       tid <- h5checkConstants("H5T", H5type)
@@ -665,7 +665,7 @@ h5createAttribute <- function(
       }
     )
   } else {
-    if (grepl(pattern = "^[[:digit:]]+$", H5type)) {
+    if (.isResolvedTypeId(H5type)) {
       tid <- H5type
     } else {
       tid <- h5checkConstants("H5T", H5type)
