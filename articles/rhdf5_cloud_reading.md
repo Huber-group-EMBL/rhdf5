@@ -144,7 +144,7 @@ and
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-09-14 r90539)
+    ## R Under development (unstable) (2026-09-15 r90540)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -169,7 +169,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] cli_3.6.6           knitr_1.52          rlang_1.3.0        
-    ##  [4] xfun_0.60           otel_0.2.0          textshaping_1.0.5  
+    ##  [4] xfun_0.61           otel_0.2.0          textshaping_1.0.5  
     ##  [7] jsonlite_2.0.0      htmltools_0.5.9     ragg_1.5.2         
     ## [10] sass_0.4.10         rmarkdown_2.32      evaluate_1.0.5     
     ## [13] jquerylib_0.1.4     fastmap_1.2.0       Rhdf5lib_2.1.0     
