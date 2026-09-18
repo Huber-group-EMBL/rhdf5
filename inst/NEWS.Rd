@@ -35,6 +35,11 @@
       `h5write()`, `h5writeDataset()` and `h5writeAttribute()`. This makes them
       consistent with the behaviour of `h5create()`, `h5createDataset()` and 
       `h5createAttribute()`.
+      \item Logical attributes are now always written as a TRUE/FALSE/NA enum
+      even if no NA are present in the dataset, rather than TRUE/FALSE in some
+      cases and TRUE/FALSE/NA in others. As a consequence, 
+      the \code{checkForNA} argument to \code{h5writeAttribute()} is now 
+      deprecated and will be removed in a future release.
     }
   }
 
