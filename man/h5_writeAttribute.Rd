@@ -14,7 +14,7 @@ h5writeAttribute(
   encoding = NULL,
   variableLengthString = TRUE,
   asScalar = FALSE,
-  checkForNA = TRUE
+  checkForNA
 )
 
 \method{h5writeAttribute}{array}(
@@ -25,7 +25,7 @@ h5writeAttribute(
   encoding = NULL,
   variableLengthString = TRUE,
   asScalar = FALSE,
-  checkForNA = TRUE
+  checkForNA
 )
 }
 \arguments{
@@ -53,21 +53,18 @@ variable-length strings into the attributes.}
 \item{asScalar}{Whether length-1 \code{attr} should be written into a scalar
 dataspace.}
 
-\item{checkForNA}{Whether a \code{attr} should be checked for \code{NA}
-values before being written.  This only applies of \code{attr} is of type
-logical.  Testing for \code{NA} values can be slow if the object to be
-written is large, so if you are sure no such values will be present this
-argument can be used to disable the testing.}
+\item{checkForNA}{Deprecated. This argument is no longer used and will be
+removed in a future version of rhdf5.}
 }
 \description{
 Write an R object as an HDF5 attribute
 }
 \examples{
-hdf5_file <- tempfile()
+hdf5_file <- "test_nona_simple.h5"
 h5createFile(hdf5_file)
 h5createGroup(hdf5_file, "group")
 
-values_to_be_written <- c(NA, FALSE, TRUE, FALSE, NA)
+values_to_be_written <- as.logical(sample(c(0, 1), 100, replace = TRUE))
 h5writeAttribute(
   values_to_be_written,
   h5obj = hdf5_file,

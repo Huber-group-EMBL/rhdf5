@@ -17,21 +17,18 @@
 #'   variable-length strings into the attributes.
 #' @param asScalar Whether length-1 `attr` should be written into a scalar
 #'   dataspace.
-#' @param checkForNA Whether a `attr` should be checked for `NA`
-#'   values before being written.  This only applies of `attr` is of type
-#'   logical.  Testing for `NA` values can be slow if the object to be
-#'   written is large, so if you are sure no such values will be present this
-#'   argument can be used to disable the testing.
+#' @param checkForNA Deprecated. This argument is no longer used and will be
+#'   removed in a future version of rhdf5.
 #' @name h5_writeAttribute
 #'
 #' @export
 #'
 #' @examples
-#' hdf5_file <- tempfile()
+#' hdf5_file <- "test_nona_simple.h5"
 #' h5createFile(hdf5_file)
 #' h5createGroup(hdf5_file, "group")
 #'
-#' values_to_be_written <- c(NA, FALSE, TRUE, FALSE, NA)
+#' values_to_be_written <- as.logical(sample(c(0, 1), 100, replace = TRUE))
 #' h5writeAttribute(
 #'   values_to_be_written,
 #'   h5obj = hdf5_file,
@@ -48,8 +45,15 @@ h5writeAttribute <- function(
   encoding = NULL,
   variableLengthString = TRUE,
   asScalar = FALSE,
-  checkForNA = TRUE
+  checkForNA
 ) {
+  if (!missing(checkForNA)) {
+    warning(
+      "The argument 'checkForNA' is deprecated ",
+      "and will be removed in a future version of rhdf5.",
+      call. = FALSE
+    )
+  }
   if (is(attr, "H5IdComponent")) {
     res <- h5writeAttribute.array(attr, h5obj, name, asScalar = TRUE)
   } else {
@@ -100,7 +104,7 @@ h5writeAttribute.array <- function(
   encoding = NULL,
   variableLengthString = TRUE,
   asScalar = FALSE,
-  checkForNA = TRUE
+  checkForNA
 ) {
   if (is.character(h5obj) && file.exists(h5obj)) {
     fid <- H5Fopen(h5obj, flags = "H5F_ACC_RDWR")
@@ -132,16 +136,6 @@ h5writeAttribute.array <- function(
   tid <- NULL
   if (storagemode == "S4" && is(attr, "H5IdComponent")) {
     storagemode <- "H5IdComponent"
-  } else if (storagemode == "logical") {
-    ## should check for NA values if required
-    any_na <- checkForNA && anyNA(attr)
-
-    tid <- H5Tenum_create(dtype_id = "H5T_NATIVE_UCHAR")
-    H5Tenum_insert(tid, name = "TRUE", value = 1L)
-    H5Tenum_insert(tid, name = "FALSE", value = 0L)
-    if (any_na) {
-      H5Tenum_insert(tid, name = "NA", value = 255L)
-    }
   }
 
   h5createAttribute(
