@@ -310,7 +310,7 @@ h5write(words, f2, "strings")
 ## Check file sizes.
 ## In this example the fixed length string dataset is normally much smaller
 file.size(f1)
-#> [1] 106865
+#> [1] 106871
 file.size(f2)
-#> [1] 59464
+#> [1] 59572
 ```

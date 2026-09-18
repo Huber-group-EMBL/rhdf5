@@ -13,7 +13,7 @@ h5writeAttribute(
   encoding = NULL,
   variableLengthString = TRUE,
   asScalar = FALSE,
-  checkForNA = TRUE
+  checkForNA
 )
 
 # S3 method for class 'array'
@@ -25,7 +25,7 @@ h5writeAttribute(
   encoding = NULL,
   variableLengthString = TRUE,
   asScalar = FALSE,
-  checkForNA = TRUE
+  checkForNA
 )
 ```
 
@@ -76,20 +76,17 @@ h5writeAttribute(
 
 - checkForNA:
 
-  Whether a `attr` should be checked for `NA` values before being
-  written. This only applies of `attr` is of type logical. Testing for
-  `NA` values can be slow if the object to be written is large, so if
-  you are sure no such values will be present this argument can be used
-  to disable the testing.
+  Deprecated. This argument is no longer used and will be removed in a
+  future version of rhdf5.
 
 ## Examples
 
 ``` r
-hdf5_file <- tempfile()
+hdf5_file <- "test_nona_simple.h5"
 h5createFile(hdf5_file)
 h5createGroup(hdf5_file, "group")
 
-values_to_be_written <- c(NA, FALSE, TRUE, FALSE, NA)
+values_to_be_written <- as.logical(sample(c(0, 1), 100, replace = TRUE))
 h5writeAttribute(
   values_to_be_written,
   h5obj = hdf5_file,
@@ -99,6 +96,14 @@ h5writeAttribute(
 
 h5readAttributes(hdf5_file, name = "/group")
 #> $test
-#> [1]    NA FALSE  TRUE FALSE    NA
+#>   [1] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE
+#>  [13] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE
+#>  [25] FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE
+#>  [37] FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE
+#>  [49] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+#>  [61] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
+#>  [73]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE
+#>  [85] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE
+#>  [97]  TRUE  TRUE FALSE  TRUE
 #> 
 ```

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rhdf5</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.57.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.57.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@
 <span>  encoding <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variableLengthString <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  asScalar <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  checkForNA <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="va">checkForNA</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'array'</span></span>
@@ -63,7 +63,7 @@
 <span>  encoding <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variableLengthString <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  asScalar <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  checkForNA <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="va">checkForNA</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -110,21 +110,18 @@ dataspace.</p></dd>
 
 
 <dt id="arg-checkforna">checkForNA<a class="anchor" aria-label="anchor" href="#arg-checkforna"></a></dt>
-<dd><p>Whether a <code>attr</code> should be checked for <code>NA</code>
-values before being written.  This only applies of <code>attr</code> is of type
-logical.  Testing for <code>NA</code> values can be slow if the object to be
-written is large, so if you are sure no such values will be present this
-argument can be used to disable the testing.</p></dd>
+<dd><p>Deprecated. This argument is no longer used and will be
+removed in a future version of rhdf5.</p></dd>
 
 </dl></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hdf5_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hdf5_file</span> <span class="op">&lt;-</span> <span class="st">"test_nona_simple.h5"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="h5_createFile.html">h5createFile</a></span><span class="op">(</span><span class="va">hdf5_file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="h5_createGroup.html">h5createGroup</a></span><span class="op">(</span><span class="va">hdf5_file</span>, <span class="st">"group"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">values_to_be_written</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">values_to_be_written</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">as.logical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">h5writeAttribute</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">values_to_be_written</span>,</span></span>
 <span class="r-in"><span>  h5obj <span class="op">=</span> <span class="va">hdf5_file</span>,</span></span>
@@ -134,7 +131,15 @@ argument can be used to disable the testing.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="h5_readAttributes.html">h5readAttributes</a></span><span class="op">(</span><span class="va">hdf5_file</span>, name <span class="op">=</span> <span class="st">"/group"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $test</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]    NA FALSE  TRUE FALSE    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25] FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37] FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97]  TRUE  TRUE FALSE  TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

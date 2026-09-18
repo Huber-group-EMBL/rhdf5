@@ -5,7 +5,7 @@ Create a simple dataspace
 ## Usage
 
 ``` r
-H5Screate_simple(dims, maxdims, native = FALSE)
+H5Screate_simple(dims, maxdims = dims, native = FALSE)
 ```
 
 ## Arguments

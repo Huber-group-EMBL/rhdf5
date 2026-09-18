@@ -5,7 +5,7 @@ Set the size of a dataspace
 ## Usage
 
 ``` r
-H5Sset_extent_simple(h5space, dims, maxdims)
+H5Sset_extent_simple(h5space, dims, maxdims = dims)
 ```
 
 ## Arguments
