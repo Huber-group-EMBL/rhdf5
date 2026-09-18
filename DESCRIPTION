@@ -1,7 +1,7 @@
 Type: Package
 Package: rhdf5
 Title: R Interface to HDF5
-Version: 2.57.16
+Version: 2.57.17
 Authors@R: c(
     person("Bernd", "Fischer", role = "aut"),
     person("Mike", "Smith", role = "aut",
@@ -52,4 +52,4 @@ Encoding: UTF-8
 LazyLoad: true
 Roxygen: list(markdown = TRUE)
 SystemRequirements: GNU make
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.0.9000
