@@ -4,7 +4,7 @@
 \alias{H5Sset_extent_simple}
 \title{Set the size of a dataspace}
 \usage{
-H5Sset_extent_simple(h5space, dims, maxdims)
+H5Sset_extent_simple(h5space, dims, maxdims = dims)
 }
 \arguments{
 \item{h5space}{\link[=H5IdComponent-class]{H5IdComponent} object representing a dataspace.}

@@ -4,7 +4,7 @@
 \alias{H5Screate_simple}
 \title{Create a simple dataspace}
 \usage{
-H5Screate_simple(dims, maxdims, native = FALSE)
+H5Screate_simple(dims, maxdims = dims, native = FALSE)
 }
 \arguments{
 \item{dims}{A numeric vector defining the initial dimensions of the dataspace.
