@@ -1,23 +1,21 @@
 .h5postProcessDataset <- function(obj, h5dataset) {
   ## warn about NA conversion for integers if 'rhdf5.NA-OK' is missing
   if (storage.mode(obj) == "integer" || is(obj, "integer64")) {
-    if (anyNA(obj)) {
-      if (!H5Aexists(h5obj = h5dataset, name = "rhdf5-NA.OK")) {
-        if (storage.mode(obj) == "integer") {
-          na_val <- "-2^31"
-        } else if (is(obj, "integer64")) {
-          na_val <- "-2^63"
-        } else {
-          ## we should never end up here
-          na_val <- "DEFAULT"
-        }
-        message(
-          "The value ",
-          na_val,
-          " was detected in the dataset.\n",
-          "This has been converted to NA within R."
-        )
+    if (!H5Aexists(h5obj = h5dataset, name = "rhdf5-NA.OK") && anyNA(obj)) {
+      if (storage.mode(obj) == "integer") {
+        na_val <- "-2^31"
+      } else if (is(obj, "integer64")) {
+        na_val <- "-2^63"
+      } else {
+        ## we should never end up here
+        na_val <- "DEFAULT"
       }
+      message(
+        "The value ",
+        na_val,
+        " was detected in the dataset.\n",
+        "This has been converted to NA within R."
+      )
     }
   } else if (storage.mode(obj) == "character") {
     # This is the old way of storing NA values in character datasets (as "NA"
