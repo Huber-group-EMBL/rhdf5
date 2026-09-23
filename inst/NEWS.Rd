@@ -90,6 +90,7 @@
       \item A number of \code{try()} calls have been removed to surface errors
       instead of silently ignoring them. If you see any new errors as a result
       of this, please report them.
+      \item Dead / unreachable / unused code has been removed.
     }
   }
 }
