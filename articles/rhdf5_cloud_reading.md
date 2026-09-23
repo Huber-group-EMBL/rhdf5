@@ -144,7 +144,7 @@ and
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-09-17 r90559)
+    ## R Under development (unstable) (2026-09-22 r90584)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
