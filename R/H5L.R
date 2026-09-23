@@ -247,7 +247,7 @@ H5Lmove <- function(
   )
 
   if (res < 0) {
-    stop("Link deletion failed")
+    stop("Link move failed")
   }
   return(invisible(res))
 }
@@ -303,7 +303,7 @@ H5Lcopy <- function(
   )
 
   if (res < 0) {
-    stop("Link deletion failed")
+    stop("Link copy failed")
   }
   return(invisible(res))
 }

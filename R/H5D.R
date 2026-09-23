@@ -92,7 +92,7 @@ H5Dcreate <- function(
 H5Dopen <- function(h5loc, name, dapl = NULL) {
   h5checktype(h5loc, "loc")
   if (length(name) != 1 || !is.character(name)) {
-    stop("'filename' must be a character string of length 1")
+    stop("'name' must be a character string of length 1")
   }
   dapl <- h5checktypeAndPLC(dapl, "H5P_DATASET_ACCESS", allowNULL = TRUE)
   did <- .Call("_H5Dopen", h5loc@ID, name, dapl@ID, PACKAGE = "rhdf5")
