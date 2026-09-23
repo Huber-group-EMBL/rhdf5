@@ -94,6 +94,10 @@
       \item \code{on.exit()} is used more consistently to close open handles.
       This reduces the risk of leaving open handles in case of unexpected
       errors.
+      \item The \code{h5writeDataset()} and \code{h5writeAttribute()} methods
+      for \code{matrix} has been removed since they only forwarded the object
+      to the \code{array} method and matrices are a subclass of arrays since
+      R 4.0.0.
     }
   }
 }
