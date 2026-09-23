@@ -64,6 +64,8 @@ h5readAttributes <- function(file, name, native = FALSE, ...) {
         res[[attrname]] <- as.logical(res[[attrname]])
       }
     }
+    ## Don't put this in on.exit()
+    ## A is overwritten in the loop and we lose track of it
     H5Aclose(A)
   }
   res

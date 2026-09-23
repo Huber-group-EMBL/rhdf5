@@ -59,9 +59,9 @@ h5set_extent <- function(file, dataset, dims, native = FALSE) {
       )
     }
     did <- H5Oopen(loc$H5Identifier, dataset)
+    on.exit(H5Oclose(did), add = TRUE)
     type <- H5Iget_type(did)
     if (type != "H5I_DATASET") {
-      H5Oclose(did)
       stop("'", dataset, "' is not a dataset.")
     }
 
@@ -74,7 +74,6 @@ h5set_extent <- function(file, dataset, dims, native = FALSE) {
     }
 
     res <- H5Dset_extent(did, dims)
-    H5Oclose(did)
   } else {
     h5checktype(dataset, "dataset")
     ## Only valid for chunked datasets, so we should check for them

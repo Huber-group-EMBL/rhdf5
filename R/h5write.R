@@ -274,8 +274,8 @@ h5writeDataset.data.frame <- function(
       as.integer(chunk),
       PACKAGE = "rhdf5"
     )
+    on.exit(.Call("_H5Dclose", did, PACKAGE = "rhdf5"), add = TRUE)
     .Call("_h5writeDataFrame", obj, did, PACKAGE = "rhdf5")
-    .Call("_H5Dclose", did, PACKAGE = "rhdf5")
     res <- 0
   } else {
     a <- attr(obj, "names")
@@ -322,10 +322,10 @@ h5writeDataset.list <- function(obj, h5loc, name, level = 6, ...) {
     }
     h5createGroup(h5loc, name)
     gid <- H5Gopen(h5loc, name)
+    on.exit(H5Gclose(gid), add = TRUE)
     for (i in seq_along(obj)) {
       h5write(obj[[i]], gid, N[i])
     }
-    H5Gclose(gid)
   }
 }
 
@@ -460,7 +460,9 @@ h5writeDataset.array <- function(
       "and deprecated.\n",
       "In particular, it will write NA_character_ as the string 'NA' in ",
       "the HDF5 file.\n",
-      "Use ", what, "variable-length strings instead."
+      "Use ",
+      what,
+      "variable-length strings instead."
     )
     h5writeAttribute(1L, h5dataset, name = "as.na")
   }

@@ -27,6 +27,8 @@ h5loadData <- function(h5loc, L, all = FALSE, ..., native) {
       L[i] <- list(
         h5loadData(group, L[[i]], all = all, ..., native = native)
       )
+      ## This cannot be folded in on.exit since `group` gets overwritten
+      ## in the loop
       H5Gclose(group)
     }
   }

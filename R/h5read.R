@@ -307,6 +307,7 @@ h5read <- function(
   }
   if (type == "H5I_GROUP") {
     gid <- H5Gopen(loc$H5Identifier, name)
+    on.exit(H5Gclose(gid), add = TRUE)
     obj <- if (.isAnndataNullable(gid)) {
       .h5readNullable(gid)
     } else {
@@ -321,7 +322,6 @@ h5read <- function(
         ...
       )
     }
-    H5Gclose(gid)
   } else if (type == "H5I_DATASET") {
     h5dataset <- H5Dopen(loc$H5Identifier, name)
     on.exit(H5Dclose(h5dataset), add = TRUE)
