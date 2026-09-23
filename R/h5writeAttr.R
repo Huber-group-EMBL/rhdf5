@@ -148,13 +148,9 @@ h5writeAttribute.array <- function(
     encoding = match.arg(encoding, choices = c("ASCII", "UTF-8", "UTF8"))
   )
   h5attr <- H5Aopen(h5obj, name)
-
-  DimMem <- dim(attr) %||% length(attr)
-  h5spaceMem <- H5Screate_simple(DimMem)
+  on.exit(H5Aclose(h5attr), add = TRUE)
 
   res <- H5Awrite(h5attr, attr)
 
-  H5Sclose(h5spaceMem)
-  H5Aclose(h5attr)
   invisible(res)
 }
