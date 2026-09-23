@@ -91,6 +91,9 @@
       instead of silently ignoring them. If you see any new errors as a result
       of this, please report them.
       \item Dead / unreachable / unused code has been removed.
+      \item \code{on.exit()} is used more consistently to close open handles.
+      This reduces the risk of leaving open handles in case of unexpected
+      errors.
     }
   }
 }
