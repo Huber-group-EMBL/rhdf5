@@ -330,10 +330,6 @@ h5writeDataset.list <- function(obj, h5loc, name, level = 6, ...) {
 }
 
 #' @export
-h5writeDataset.matrix <- function(...) {
-  h5writeDataset.array(...)
-}
-#' @export
 h5writeDataset.integer <- function(...) {
   h5writeDataset.array(...)
 }

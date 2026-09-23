@@ -63,10 +63,6 @@ h5writeAttribute <- function(
 }
 
 #' @export
-h5writeAttribute.matrix <- function(...) {
-  h5writeAttribute.array(...)
-}
-#' @export
 h5writeAttribute.integer <- function(...) {
   h5writeAttribute.array(...)
 }
