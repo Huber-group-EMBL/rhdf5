@@ -28,7 +28,6 @@ h5const <- function(type = "") {
 #' @rdname h5constants
 #' @export
 h5constType <- function() {
-  h5constants <- H5loadConstants()
   names(h5constants)
 }
 
