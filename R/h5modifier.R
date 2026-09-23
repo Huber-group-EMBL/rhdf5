@@ -46,10 +46,10 @@ h5set_extent <- function(file, dataset, dims, native = FALSE) {
       call. = FALSE
     )
   }
-  loc <- h5checktypeOrOpenLoc(file, native = native)
-  on.exit(h5closeitLoc(loc))
 
   if (is.character(dataset)) {
+    loc <- h5checktypeOrOpenLoc(file, native = native)
+    on.exit(h5closeitLoc(loc))
     if (!H5Lexists(loc$H5Identifier, dataset)) {
       stop(
         "Object ",
@@ -78,11 +78,10 @@ h5set_extent <- function(file, dataset, dims, native = FALSE) {
   } else {
     h5checktype(dataset, "dataset")
     ## Only valid for chunked datasets, so we should check for them
-    if (!H5Dis_chunked(did)) {
+    if (!H5Dis_chunked(dataset)) {
       stop(
-        "Only chunked datasets can have their extent changed.\n'",
-        dataset,
-        "' is not chunked."
+        "Only chunked datasets can have their extent changed. ",
+        "The provided dataset is not chunked."
       )
     }
     res <- H5Dset_extent(dataset, dims)

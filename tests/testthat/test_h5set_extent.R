@@ -1,5 +1,3 @@
-library(rhdf5)
-
 ############################################################
 context("h5set_extent")
 ############################################################
@@ -45,4 +43,38 @@ test_that("Fail if missing", {
     regexp = "does not exist in this HDF5 file.",
     fixed = TRUE
   )
+})
+
+test_that("Changing extent via dataset handle", {
+  fid <- H5Fopen(h5File)
+  on.exit(H5Fclose(fid))
+  did <- H5Dopen(fid, "foo")
+  on.exit(H5Dclose(did), add = TRUE)
+
+  expect_true(h5set_extent(
+    file = h5File,
+    dataset = did,
+    dims = c(3, length(D))
+  ))
+  expect_shape(h5read(h5File, name = "foo"), dim = c(3L, length(D)))
+})
+
+test_that("h5set_extent() rejects non-chunked dataset handle", {
+  h5createDataset(
+    file = h5File,
+    dataset = "unchunked",
+    dims = c(1, 4),
+    chunk = NULL,
+    level = 0
+  )
+  fid <- H5Fopen(h5File)
+  on.exit(H5Fclose(fid))
+  did <- H5Dopen(fid, "unchunked")
+  on.exit(H5Dclose(did), add = TRUE)
+
+  expect_error(
+    h5set_extent(dataset = did, dims = c(2, 4)),
+    "is not chunked"
+  ) |>
+    expect_no_warning()
 })
