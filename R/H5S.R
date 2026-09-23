@@ -532,7 +532,13 @@ H5Scombine_select <- function(
   h5checktype(h5space2, "dataspace")
   op <- h5checkConstants("H5S_SELECT", op)
 
-  sid <- .Call("_H5Scombine_select", h5space1@ID, op, h5space2@ID)
+  sid <- .Call(
+    "_H5Scombine_select",
+    h5space1@ID,
+    op,
+    h5space2@ID,
+    PACKAGE = "rhdf5"
+  )
 
   invisible(.wrapH5Id(
     sid,

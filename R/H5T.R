@@ -257,7 +257,7 @@ H5Tenum_insert <- function(dtype_id, name, value) {
     stop("The 'value' argument must be an integer.")
   }
 
-  res <- .Call("_H5Tenum_insert", dtype_id, name, value)
+  res <- .Call("_H5Tenum_insert", dtype_id, name, value, PACKAGE = "rhdf5")
 
   return(invisible(res >= 0))
 }
