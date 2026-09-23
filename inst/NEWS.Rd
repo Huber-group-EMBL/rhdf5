@@ -16,6 +16,8 @@
       \item Variable length string datasets now support writing and reading
       \code{NA_character_} values. These values will be read as the empty
       string \code{""} in Python.
+      \item It is no longer necessary to pass a file name to 
+      \code{h5set_extent()} when providing a dataset handle.
     }
   }
 
@@ -58,6 +60,9 @@
       \item \code{h5read()} no longer crashes when reading variable-length 
       string datasets with non-continuous indices in \code{index}. Thanks to 
       Johannes Rainer for the report and reproducible example.
+      \item Passing a \code{H5IdComponent} object to \code{h5set_extent()} now
+      works without error and warning. This issue was present since Bioconductor
+      3.17.
     }
   }
 
