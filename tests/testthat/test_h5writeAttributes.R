@@ -211,12 +211,6 @@ test_that("Checking other string options when adding attributes", {
     c("blah", "blah2", "blah3")
   )
 })
-#
-# test_that("Unable to add logical attribute", {
-#     fid <- H5Fopen(h5File)
-#     expect_error( h5writeAttribute(attr = FALSE, h5obj = fid, name = "logical_attr"))
-#     H5Fclose(fid)
-# })
 
 test_that("Overwrite exisiting attribute", {
   fid <- H5Fopen(h5File)
