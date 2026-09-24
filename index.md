@@ -23,6 +23,10 @@ For bug reports, please register an
 usage queries please post a question on the [Bioconductor Support
 Forum](https://support.bioconductor.org/p/new/post/?tag_val=rhdf5).
 
+This is an approved de.NBI service. Please help us improve by taking
+[our short user
+survey](https://www.surveymonkey.de/r/denbi-service?sc=hd-hub&tool=rhdf5).
+
 ## Funding
 
 Funding for continued development and maintenance of this package has
