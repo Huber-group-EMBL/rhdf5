@@ -1,7 +1,5 @@
 # rhdf5
 
-![](reference/figures/logo.svg)
-
 This R/Bioconductor package provides an interface between HDF5 and R.
 HDF5’s main features are the ability to store and access very large
 and/or complex datasets and a wide variety of metadata on mass storage
