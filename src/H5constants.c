@@ -289,6 +289,3 @@ SEXP _H5constants(void) {
   UNPROTECT(1); // Rval
   return (Rval);
 }
-
-SEXP _getDatatypeName(SEXP _type);
-SEXP _getDatatypeClass(SEXP _type);
