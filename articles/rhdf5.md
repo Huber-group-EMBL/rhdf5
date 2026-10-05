@@ -168,6 +168,22 @@ consequences for large datasets and datastructures.
 h5f$foo$foobaa$C
 ```
 
+    ## Warning: The 'callGeneric' argument is deprecated and will be removed in the
+    ## next version. Please wrap h5read() in your own function, or provide your own
+    ## downstream steps to handle class-specific post-processing. As far as we know,
+    ## this feature has never been used. Please get in touch as soon as possible if
+    ## you rely on this feature.
+    ## Warning: The 'callGeneric' argument is deprecated and will be removed in the
+    ## next version. Please wrap h5read() in your own function, or provide your own
+    ## downstream steps to handle class-specific post-processing. As far as we know,
+    ## this feature has never been used. Please get in touch as soon as possible if
+    ## you rely on this feature.
+    ## Warning: The 'callGeneric' argument is deprecated and will be removed in the
+    ## next version. Please wrap h5read() in your own function, or provide your own
+    ## downstream steps to handle class-specific post-processing. As far as we know,
+    ## this feature has never been used. Please get in touch as soon as possible if
+    ## you rely on this feature.
+
     ##      [,1]                             [,2]                            
     ## [1,] "A KB LC MD NE OF PG QH RI SJ T" "A KB LC MD NE OF PG QH RI SJ T"
     ## [2,] "A KB LC MD NE OF PG QH RI SJ T" "A KB LC MD NE OF PG QH RI SJ T"
@@ -1072,7 +1088,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] rhdf5_2.57.18    BiocStyle_2.41.0
+    ## [1] rhdf5_2.57.19    BiocStyle_2.41.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] cli_3.6.6           knitr_1.52          rlang_1.3.0        

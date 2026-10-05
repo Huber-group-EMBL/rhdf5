@@ -86,12 +86,7 @@ h5read(
 
 - callGeneric:
 
-  If TRUE a generic function h5read.classname will be called if it
-  exists depending on the dataset's class attribute within the HDF5
-  file. This function can be used to convert the standard output of
-  h5read depending on the class attribute. Note that h5read is not a S3
-  generic function. Dispatching is done based on the HDF5 attribute
-  after the standard h5read function.
+  Deprecated.
 
 - read.attributes:
 
