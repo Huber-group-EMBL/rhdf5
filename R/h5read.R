@@ -197,12 +197,7 @@ h5readDataset <- function(
 #' data.frame. This is not possible, if the dataset is multi-dimensional.
 #' Otherwise the compound datatype will be returned as a list. Nested compound
 #' data types will be returned as a nested list.
-#' @param callGeneric If TRUE a generic function h5read.classname will be
-#' called if it exists depending on the dataset's class attribute within the
-#' HDF5 file. This function can be used to convert the standard output of
-#' h5read depending on the class attribute. Note that h5read is not a S3
-#' generic function. Dispatching is done based on the HDF5 attribute after the
-#' standard h5read function.
+#' @param callGeneric Deprecated.
 #' @param read.attributes (logical) If `TRUE`, the HDF5 attributes are read and
 #' attached to the respective R object.
 #' @param drop (logical) If TRUE, the HDF5 object is read as a vector with `NULL`
@@ -261,6 +256,18 @@ h5read <- function(
   s3 = FALSE,
   s3credentials = NULL
 ) {
+  if (!missing(callGeneric)) {
+    warning(
+      "The 'callGeneric' argument is deprecated ",
+      "and will be removed in the next version. ",
+      "Please wrap h5read() in your own function, ",
+      "or provide your own downstream steps ",
+      "to handle class-specific post-processing. ",
+      "As far as we know, this feature has never been used. ",
+      "Please get in touch as soon as possible if you rely on this feature.",
+      call. = FALSE
+    )
+  }
   if (missing(name)) {
     stop(
       "Please provide the name of the object to read using the 'name' argument. ",
