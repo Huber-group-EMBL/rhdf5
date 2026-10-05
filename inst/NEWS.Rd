@@ -42,6 +42,10 @@
       cases and TRUE/FALSE/NA in others. As a consequence, 
       the \code{checkForNA} argument to \code{h5writeAttribute()} is now 
       deprecated and will be removed in a future release.
+      \item The \code{callGeneric} argument to \code{h5read()} is now
+      deprecated and will be removed in the next version. Please get in touch 
+      if you rely on this feature. As far as we know, this feature has never
+      been used.
     }
   }
 
