@@ -67,6 +67,10 @@
       \item Passing a \code{H5IdComponent} object to \code{h5set_extent()} now
       works without error and warning. This issue was present since Bioconductor
       3.17.
+      \item Values of length greater than 1 for the argument
+      \code{storage.mode} to \code{h5create()} and \code{h5createDataset()} of
+      length greater than 1 now errors instead of silently ignoring the extra
+      values.
     }
   }
 
