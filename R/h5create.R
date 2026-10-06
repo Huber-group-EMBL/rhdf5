@@ -110,11 +110,13 @@ h5createGroup <- function(file, group) {
   logical_as = c("enum", "integer")
 ) {
   if (is.null(H5type)) {
-    if (!is.character(storage.mode)) {
-      stop("Can not create dataset. 'storage.mode' has to be a character.")
+    if (!is.character(storage.mode) || length(storage.mode) != 1L) {
+      stop(
+        "Can not create dataset. 'storage.mode' has to be a character of length 1."
+      )
     }
     tid <- switch(
-      storage.mode[1],
+      storage.mode,
       double = h5constants$H5T["H5T_IEEE_F64LE"],
       integer = h5constants$H5T["H5T_STD_I32LE"],
       integer64 = h5constants$H5T["H5T_STD_I64LE"],
@@ -555,7 +557,7 @@ h5createDataset <- function(
 
   did <- H5Dcreate(loc$H5Identifier, dataset, tid, sid, dcpl = dcpl)
   if (is(did, "H5IdComponent")) {
-    if (storage.mode[1] == "logical") {
+    if (storage.mode == "logical") {
       x <- "logical"
       h5writeAttribute(attr = x, h5obj = did, name = "storage.mode")
     }
