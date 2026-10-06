@@ -56,7 +56,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.016   0.007   0.022
+    ##   0.024   0.009   0.031
 
 Next, instead of selecting 10,000 consecutive columns we’ll ask for
 every other column. This should still return the same amount of data and
@@ -75,7 +75,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.041   0.001   0.042
+    ##   0.074   0.002   0.074
 
 We can see this is marginally slower, because there’s a small overhead
 in selecting this disjoint set of columns, but it’s only marginal and
@@ -107,7 +107,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.038   0.000   0.038
+    ##   0.067   0.000   0.067
 
 ``` r
 
@@ -161,10 +161,10 @@ system.time(res4 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##  14.507   0.038  14.546
+    ##  19.339   0.065  19.406
 
 This is clearly a terrible idea, it takes ages! For reference, using the
-`index` argument with this set of columns takes 0.052 seconds. This poor
+`index` argument with this set of columns takes 0.088 seconds. This poor
 performance is driven by two things:
 
 1.  Our dataset was created as a single chunk. This means for each
@@ -212,7 +212,7 @@ system.time(res5 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##   1.209   0.016   1.226
+    ##   2.454   0.062   2.516
 
 This is still quite slow, and the remaining time is being spent on the
 overheads associated with multiple calls to
@@ -238,7 +238,7 @@ system.time(f2())
 ```
 
     ##    user  system elapsed 
-    ##   0.303   0.005   0.309
+    ##   0.594   0.015   0.609
 
 We can see this has a significant effect, although it’s still an order
 of magnitude slower than when we were dealing with regularly spaced
@@ -247,7 +247,7 @@ including the size of the dataset chunks and the sparsity of the column
 index, and you varying the `block_size` argument will produce differing
 performances. The plot below shows the timings achieved by providing a
 selection of values to `block_size`. It suggests the optimal parameter
-in this case is probably a block size of 10000, which took 0.05
+in this case is probably a block size of 10000, which took 0.09
 seconds - noticeably faster than when passing all columns to the `index`
 argument in a single call.
 
@@ -463,21 +463,21 @@ Below we can see some timings comparing calling `simple_writer()` with
     ## # A tibble: 4 × 3
     ##   expression               min median
     ##   <bch:expr>             <dbl>  <dbl>
-    ## 1 simple writer          19.9   20.0 
-    ## 2 split/gather - 1 core  20.2   20.5 
-    ## 3 split/gather - 2 cores 10.4   10.6 
-    ## 4 split/gather - 4 cores  8.13   8.19
+    ## 1 simple writer           30.3   30.3
+    ## 2 split/gather - 1 core   30.5   30.5
+    ## 3 split/gather - 2 cores  15.6   15.8
+    ## 4 split/gather - 4 cores  11.6   11.6
 
 We can see from our benchmark results that there is some performance
 improvement to be achieved by using the parallel approach. Based on the
 median times of out three iterations using two cores sees an speedup of
-1.89 and 2.4 with 4 cores. This isn’t quite linear, presumably because
+1.92 and 2.6 with 4 cores. This isn’t quite linear, presumably because
 there are overheads involved both in using a two-step process and
 initialising the parallel workers, but it is a noticeable improvement.
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-02 r90631)
+    ## R Under development (unstable) (2026-10-05 r90641)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -499,7 +499,7 @@ initialising the parallel workers, but it is a noticeable improvement.
     ## 
     ## other attached packages:
     ## [1] BiocParallel_1.47.0 ggplot2_4.0.3       dplyr_1.2.1        
-    ## [4] rhdf5_2.57.19       BiocStyle_2.41.0   
+    ## [4] rhdf5_2.57.20       BiocStyle_2.41.0   
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        jsonlite_2.0.0      compiler_4.7.0     

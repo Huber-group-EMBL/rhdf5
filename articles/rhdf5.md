@@ -1067,7 +1067,7 @@ H5Fclose(h5file)
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-10-02 r90631)
+    ## R Under development (unstable) (2026-10-05 r90641)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -1088,7 +1088,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] rhdf5_2.57.19    BiocStyle_2.41.0
+    ## [1] rhdf5_2.57.20    BiocStyle_2.41.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] cli_3.6.6           knitr_1.52          rlang_1.3.0        
