@@ -1169,12 +1169,16 @@ SEXP _H5Pset_fill_value(SEXP _plist_id, SEXP _type_id, SEXP _value) {
   hid_t plist_id = STRSXP_2_HID(_plist_id);
   hid_t type_id = STRSXP_2_HID(_type_id);
   void *value;
-  if (type_id == H5T_IEEE_F64LE) {
+  const char *str;
+  if (H5Tequal(type_id, H5T_IEEE_F64LE) > 0) {
     value = REAL(_value);
-  } else if (type_id == H5T_STD_I32LE) {
+  } else if (H5Tequal(type_id, H5T_STD_I32LE) > 0) {
     value = INTEGER(_value);
-  } else if (type_id == H5T_STD_I8LE) {
+  } else if (H5Tequal(type_id, H5T_STD_I8LE) > 0) {
     value = LOGICAL(_value);
+  } else if (H5Tis_variable_str(type_id) > 0) {
+    str = CHAR(STRING_ELT(_value, 0));
+    value = (void *)&str;
   } else {
     value = (void *)CHAR(STRING_ELT(_value, 0));
   }
@@ -1183,27 +1187,52 @@ SEXP _H5Pset_fill_value(SEXP _plist_id, SEXP _type_id, SEXP _value) {
   return Rval;
 }
 
-/* /\* herr_t H5Pget_fill_value(hid_t plist_id, hid_t type_id, void * value) *\/
- */
-/* SEXP _H5Pget_fill_value( SEXP _plist_id, SEXP _type_id ) { */
-/*   hid_t plist_id = INTEGER(_plist_id)[0]; */
-/*   hid_t type_id = INTEGER(_type_id)[0]; */
-/*   int value; */
-/* CHECK FOR TYPE before calling */
-/*   herr_t herr = H5Pget_fill_value(plist_id, type_id, &value); */
-/*   SEXP Rval = R_NilValue; */
-/*   if (herr >= 0) { */
-/*     Rval = PROTECT(allocVector(INTSXP, rank)); */
-/*     for (int i=0; i < rank; i++) { */
-/*       INTEGER(Rval)[i] = dims[i]; */
-/*     } */
-/*     UNPROTECT(1); */
-/*   } */
-/*   return Rval; */
+/* herr_t H5Pget_fill_value(hid_t plist_id, hid_t type_id, void * value) */
+SEXP _H5Pget_fill_value(SEXP _plist_id, SEXP _type_id) {
+  hid_t plist_id = STRSXP_2_HID(_plist_id);
+  hid_t type_id = STRSXP_2_HID(_type_id);
+  SEXP Rval = R_NilValue;
+  herr_t herr;
 
-/*   SEXP Rval = ScalarInteger(herr); */
-/*   return Rval; */
-/* } */
+  if (H5Tequal(type_id, H5T_IEEE_F64LE) > 0) {
+    double value;
+    herr = H5Pget_fill_value(plist_id, type_id, &value);
+    if (herr >= 0) {
+      Rval = ScalarReal(value);
+    }
+  } else if (H5Tequal(type_id, H5T_STD_I32LE) > 0) {
+    int value;
+    herr = H5Pget_fill_value(plist_id, type_id, &value);
+    if (herr >= 0) {
+      Rval = ScalarInteger(value);
+    }
+  } else if (H5Tequal(type_id, H5T_STD_I8LE) > 0) {
+    signed char value;
+    herr = H5Pget_fill_value(plist_id, type_id, &value);
+    if (herr >= 0) {
+      Rval = ScalarLogical(value);
+    }
+  } else if (H5Tequal(type_id, H5T_C_S1) > 0) {
+    if (H5Tis_variable_str(type_id) > 0) {
+      char *value = NULL;
+      herr = H5Pget_fill_value(plist_id, type_id, &value);
+      if (herr >= 0 && value != NULL) {
+        Rval = mkString(value);
+        H5free_memory(value);
+      }
+    } else {
+      size_t size = H5Tget_size(type_id);
+      char *buf = (char *)R_alloc(size + 1, sizeof(char));
+      memset(buf, 0, size + 1);
+      herr = H5Pget_fill_value(plist_id, type_id, buf);
+      if (herr >= 0) {
+        Rval = mkString(buf);
+      }
+    }
+  }
+
+  return Rval;
+}
 
 /* herr_t H5Pfill_value_defined(hid_t plist_id, H5D_fill_value_t * status) */
 SEXP _H5Pfill_value_defined(SEXP _plist_id) {

@@ -141,7 +141,7 @@ SEXP _H5Pset_chunk( SEXP _plist, SEXP _dim );
 SEXP _H5Pget_chunk( SEXP _plist );
 SEXP _H5Pset_deflate( SEXP _plist_id, SEXP _level );
 SEXP _H5Pset_fill_value( SEXP _plist_id, SEXP _type_id, SEXP _value );
-/* SEXP _H5Pget_fill_value( SEXP _plist_id, SEXP _type_id, SEXP _value ); */
+SEXP _H5Pget_fill_value( SEXP _plist_id, SEXP _type_id );
 SEXP _H5Pfill_value_defined( SEXP _plist_id );
 SEXP _H5Pset_fill_time( SEXP _plist_id, SEXP _fill_time );
 SEXP _H5Pget_fill_time( SEXP _plist_id );
