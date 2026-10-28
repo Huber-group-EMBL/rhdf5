@@ -200,6 +200,7 @@ SEXP H5Dread_helper_INTEGER(hid_t dataset_id, hid_t file_space_id,
             hid_t mem_type_id2 =
                 H5Tcreate(H5T_COMPOUND, H5Tget_size(H5T_NATIVE_UCHAR));
             herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+            H5Tclose(mem_type_id);
             mem_type_id = mem_type_id2;
           }
         }
@@ -232,6 +233,7 @@ SEXP H5Dread_helper_INTEGER(hid_t dataset_id, hid_t file_space_id,
             hid_t mem_type_id2 =
                 H5Tcreate(H5T_COMPOUND, H5Tget_size(H5T_NATIVE_INT32));
             herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+            H5Tclose(mem_type_id);
             mem_type_id = mem_type_id2;
           }
         }
@@ -269,6 +271,7 @@ SEXP H5Dread_helper_INTEGER(hid_t dataset_id, hid_t file_space_id,
           hid_t mem_type_id2 =
               H5Tcreate(H5T_COMPOUND, H5Tget_size(H5T_NATIVE_INT32));
           herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+          H5Tclose(mem_type_id);
           mem_type_id = mem_type_id2;
         }
       }
@@ -322,6 +325,7 @@ SEXP H5Dread_helper_INTEGER(hid_t dataset_id, hid_t file_space_id,
           hid_t mem_type_id2 =
               H5Tcreate(H5T_COMPOUND, H5Tget_size(dtypeNative));
           herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+          H5Tclose(mem_type_id);
           mem_type_id = mem_type_id2;
         }
       }
@@ -423,6 +427,7 @@ SEXP H5Dread_helper_FLOAT(hid_t dataset_id, hid_t file_space_id,
         hid_t mem_type_id2 =
             H5Tcreate(H5T_COMPOUND, H5Tget_size(H5T_NATIVE_DOUBLE));
         herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+        H5Tclose(mem_type_id);
         mem_type_id = mem_type_id2;
       }
     }
@@ -472,6 +477,7 @@ SEXP H5Dread_helper_STRING(hid_t dataset_id, hid_t file_space_id,
     for (int i = 1; i < cpdNField; i++) {
       hid_t mem_type_id2 = H5Tcreate(H5T_COMPOUND, size);
       herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+      H5Tclose(mem_type_id);
       mem_type_id = mem_type_id2;
     }
   }
@@ -520,6 +526,9 @@ SEXP H5Dread_helper_STRING(hid_t dataset_id, hid_t file_space_id,
     }
     setAttrib(Rval, R_DimSymbol, Rdim);
   }
+  if (cpdType >= 0) {
+    H5Tclose(mem_type_id);
+  }
   UNPROTECT(1);
   return (Rval);
 }
@@ -542,6 +551,7 @@ SEXP H5Dread_helper_ENUM(hid_t dataset_id, hid_t file_space_id,
       char *st = H5Tget_member_name(dtype_id, i);
       SET_STRING_ELT(levels, i, mkChar(st));
       herr = H5Tenum_insert(enumtype, st, &i);
+      H5free_memory(st);
     }
 
     if (cpdType < 0) {
@@ -552,6 +562,7 @@ SEXP H5Dread_helper_ENUM(hid_t dataset_id, hid_t file_space_id,
       for (int i = 1; i < cpdNField; i++) {
         hid_t mem_type_id2 = H5Tcreate(H5T_COMPOUND, H5Tget_size(enumtype));
         herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+        H5Tclose(mem_type_id);
         mem_type_id = mem_type_id2;
       }
     }
@@ -572,6 +583,11 @@ SEXP H5Dread_helper_ENUM(hid_t dataset_id, hid_t file_space_id,
     if (herr < 0) {
       error("Unable to read dataset");
     }
+
+    if (cpdType >= 0) {
+      H5Tclose(mem_type_id);
+    }
+    H5Tclose(enumtype);
 
     if (native)
       PERMUTE(Rval, INTEGER, mem_space_id);
@@ -640,6 +656,7 @@ SEXP H5Dread_helper_ARRAY(hid_t dataset_id, hid_t file_space_id,
       for (int i = 1; i < cpdNField; i++) {
         hid_t mem_type_id2 = H5Tcreate(H5T_COMPOUND, H5Tget_size(arraytype));
         herr = H5Tinsert(mem_type_id2, cpdField[i], 0, mem_type_id);
+        H5Tclose(mem_type_id);
         mem_type_id = mem_type_id2;
       }
     }
@@ -673,6 +690,10 @@ SEXP H5Dread_helper_ARRAY(hid_t dataset_id, hid_t file_space_id,
     if (herr < 0) {
       error("Unable to read dataset");
     }
+    if (cpdType >= 0) {
+      H5Tclose(mem_type_id);
+    }
+    H5Tclose(arraytype);
 
     if (native) {
       int rank0 = H5Sget_simple_extent_ndims(mem_space_id);
@@ -1162,6 +1183,8 @@ SEXP _H5Dwrite(SEXP _dataset_id, SEXP _buf, SEXP _file_space_id,
   // Used in the STRSXP case but it's better practice to delcare it outside of
   // the switch statement.
   int protected = 0;
+  // True when mem_type_id was created here and must be closed
+  bool ownsMemType = false;
 
   switch (TYPEOF(_buf)) {
   case RAWSXP:
@@ -1199,6 +1222,7 @@ SEXP _H5Dwrite(SEXP _dataset_id, SEXP _buf, SEXP _file_space_id,
     break;
   case STRSXP:
     mem_type_id = H5Dget_type(dataset_id);
+    ownsMemType = true;
     if (native) {
       _buf = PROTECT(PERMUTE_STRSXP(_buf, dim_space_id));
       protected++;
@@ -1209,6 +1233,7 @@ SEXP _H5Dwrite(SEXP _dataset_id, SEXP _buf, SEXP _file_space_id,
   case CPLXSXP:
     if (isNull(_mem_type_id)) {
       mem_type_id = H5Dget_type(dataset_id);
+      ownsMemType = true;
     } else {
       mem_type_id = STRSXP_2_HID(_mem_type_id);
     }
@@ -1242,6 +1267,9 @@ SEXP _H5Dwrite(SEXP _dataset_id, SEXP _buf, SEXP _file_space_id,
 
   herr_t herr = H5Dwrite(dataset_id, mem_type_id, mem_space_id, file_space_id,
                          H5P_DEFAULT, buf);
+  if (ownsMemType) {
+    H5Tclose(mem_type_id);
+  }
   return ScalarInteger(herr);
 }
 

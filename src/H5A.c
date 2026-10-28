@@ -374,6 +374,7 @@ SEXP H5Aread_helper(hid_t attr_id, hsize_t n, SEXP Rdim, SEXP _buf,
   } break;
   }
 
+  H5Tclose(dtype_id);
   return (Rval);
 }
 
@@ -439,6 +440,7 @@ SEXP _H5Awrite(SEXP _attr_id, SEXP _buf) {
   const void *buf;
   static const char *H5Ref[] = {"H5Ref", ""};
   int values[3] = {1, 0, NA_LOGICAL};
+  bool ownsMemType = false;
 
   switch (TYPEOF(_buf)) {
   case INTSXP:
@@ -450,11 +452,13 @@ SEXP _H5Awrite(SEXP _attr_id, SEXP _buf) {
     buf = REAL(_buf);
     break;
   case STRSXP:
+    ownsMemType = true;
     mem_type_id = H5Aget_type(attr_id);
     buf = read_string_datatype(mem_type_id, _buf);
     break;
   case LGLSXP:
     // create memory enum type
+    ownsMemType = true;
     mem_type_id = H5Tenum_create(H5T_NATIVE_INT32);
     H5Tenum_insert(mem_type_id, "TRUE", &values[0]);
     H5Tenum_insert(mem_type_id, "FALSE", &values[1]);
@@ -465,6 +469,7 @@ SEXP _H5Awrite(SEXP _attr_id, SEXP _buf) {
     if (n == 3) {
       H5Tenum_insert(mem_type_id, "NA", &values[2]);
     }
+    H5Tclose(attr_type_id);
     buf = LOGICAL(_buf);
     break;
   case S4SXP:
@@ -492,6 +497,9 @@ SEXP _H5Awrite(SEXP _attr_id, SEXP _buf) {
   }
 
   herr_t herr = H5Awrite(attr_id, mem_type_id, buf);
+  if (ownsMemType) {
+    H5Tclose(mem_type_id);
+  }
   if (herr < 0) {
     error("Error writing attribute");
   }
