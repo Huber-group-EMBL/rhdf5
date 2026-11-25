@@ -380,6 +380,7 @@ static R_CallMethodDef libraryRCalls[] = {
     {"_H5Pset_lzf", (DL_FUNC)&_H5Pset_lzf, 1},
     {"_H5Pset_bzip2", (DL_FUNC)&_H5Pset_bzip2, 2},
     {"_H5Pset_blosc", (DL_FUNC)&_H5Pset_blosc, 5},
+    {"_H5Pset_zstd", (DL_FUNC)&_H5Pset_zstd, 2},
 #endif
     {NULL, NULL, 0}};
 

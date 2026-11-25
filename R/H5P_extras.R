@@ -46,6 +46,35 @@ H5Pset_bzip2 <- function(h5plist, level = 2L) {
   invisible(res)
 }
 
+#' Add the Zstandard (ZSTD) filter to the chunk processing pipeline.
+#'
+#' @param h5plist Object of class [H5IdComponent-class] representing a dataset
+#' creation property list.
+#' @param level Compression level to be used by the ZSTD algorithm. Must be an
+#' integer between 0 (default) and 22. When 0, ZSTD uses its own default, which
+#' is currently 3.
+#'
+#' @export
+H5Pset_zstd <- function(h5plist, level = 3L) {
+  if (!is.loaded("_H5Pset_zstd", PACKAGE = "rhdf5")) {
+    stop(
+      "ZSTD filter not found.\nPlease install rhdf5filters, and then reinstall rhdf5."
+    )
+  }
+  if (level < 0 || level > 22) {
+    stop("Invalid ZSTD compression level. Must be between 0 and 22.")
+  }
+
+  h5checktypeAndPLC(h5plist, "H5P_DATASET_CREATE")
+  res <- .Call(
+    "_H5Pset_zstd",
+    h5plist@ID,
+    as.integer(level),
+    PACKAGE = "rhdf5"
+  )
+  invisible(res)
+}
+
 #' Add the BLOSC filter to the chunk processing pipeline.
 #'
 #' @param h5plist Object of class [H5IdComponent-class] representing a dataset

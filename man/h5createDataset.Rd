@@ -120,8 +120,9 @@ different compression algorithms.  Each of the options below will active a
 different compression filter. }{ \itemize{ \item\code{"BLOSC_BLOSCLZ"}
 \item\code{"BLOSC_LZ4"} \item\code{"BLOSC_LZ4HC"} \item\code{"BLOSC_SNAPPY"}
 \item\code{"BLOSC_ZLIB"} \item\code{"BLOSC_ZSTD"} } } \item{lzf}{ \itemize{
-\item\code{"LZF"} } } \item{Disable: It is possible to write chunks without
-any compression applied.}{ \itemize{ \item\code{"NONE"} } } }
+\item\code{"LZF"} } } \item{zstd}{ \itemize{ \item\code{"ZSTD"} } } \item{Disable:
+It is possible to write chunks without any compression applied.}{ \itemize{
+\item\code{"NONE"} } } }
 }
 \examples{
 
