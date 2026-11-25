@@ -185,6 +185,10 @@ values for selecting them are shown below:
 
   - `"LZF"`
 
+- zstd:
+
+  - `"ZSTD"`
+
 - Disable: It is possible to write chunks without any compression
   applied.:
 

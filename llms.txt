@@ -403,6 +403,8 @@ Functions for working with HDF5 Datatypes
   : Add the BLOSC filter to the chunk processing pipeline.
 - [`H5Pset_lzf()`](https://huber-group-embl.github.io/rhdf5/reference/H5Pset_lzf.md)
   : Add the LZF filter to the chunk processing pipeline.
+- [`H5Pset_zstd()`](https://huber-group-embl.github.io/rhdf5/reference/H5Pset_zstd.md)
+  : Add the Zstandard (ZSTD) filter to the chunk processing pipeline.
 - [`H5Pset_filter()`](https://huber-group-embl.github.io/rhdf5/reference/H5Pset_filter.md)
   : Add a filter to the dataset filter pipeline.
 - [`H5Pset_chunk()`](https://huber-group-embl.github.io/rhdf5/reference/H5P_chunk.md)

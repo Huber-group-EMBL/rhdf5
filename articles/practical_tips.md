@@ -56,7 +56,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.024   0.009   0.031
+    ##   0.025   0.011   0.036
 
 Next, instead of selecting 10,000 consecutive columns we’ll ask for
 every other column. This should still return the same amount of data and
@@ -75,7 +75,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.074   0.002   0.074
+    ##   0.073   0.004   0.077
 
 We can see this is marginally slower, because there’s a small overhead
 in selecting this disjoint set of columns, but it’s only marginal and
@@ -107,7 +107,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.067   0.000   0.067
+    ##   0.068   0.001   0.069
 
 ``` r
 
@@ -161,10 +161,10 @@ system.time(res4 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##  19.339   0.065  19.406
+    ##  19.838   0.052  19.892
 
 This is clearly a terrible idea, it takes ages! For reference, using the
-`index` argument with this set of columns takes 0.088 seconds. This poor
+`index` argument with this set of columns takes 0.09 seconds. This poor
 performance is driven by two things:
 
 1.  Our dataset was created as a single chunk. This means for each
@@ -212,7 +212,7 @@ system.time(res5 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##   2.454   0.062   2.516
+    ##   2.470   0.038   2.507
 
 This is still quite slow, and the remaining time is being spent on the
 overheads associated with multiple calls to
@@ -238,7 +238,7 @@ system.time(f2())
 ```
 
     ##    user  system elapsed 
-    ##   0.594   0.015   0.609
+    ##   0.582   0.011   0.593
 
 We can see this has a significant effect, although it’s still an order
 of magnitude slower than when we were dealing with regularly spaced
@@ -463,27 +463,27 @@ Below we can see some timings comparing calling `simple_writer()` with
     ## # A tibble: 4 × 3
     ##   expression               min median
     ##   <bch:expr>             <dbl>  <dbl>
-    ## 1 simple writer           30.3   30.3
-    ## 2 split/gather - 1 core   30.5   30.5
-    ## 3 split/gather - 2 cores  15.6   15.8
-    ## 4 split/gather - 4 cores  11.6   11.6
+    ## 1 simple writer           38.4   38.4
+    ## 2 split/gather - 1 core   30.3   30.4
+    ## 3 split/gather - 2 cores  15.6   15.7
+    ## 4 split/gather - 4 cores  11.4   11.7
 
 We can see from our benchmark results that there is some performance
 improvement to be achieved by using the parallel approach. Based on the
 median times of out three iterations using two cores sees an speedup of
-1.92 and 2.6 with 4 cores. This isn’t quite linear, presumably because
+2.45 and 3.3 with 4 cores. This isn’t quite linear, presumably because
 there are overheads involved both in using a two-step process and
 initialising the parallel workers, but it is a noticeable improvement.
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-05 r90641)
+    ## R Under development (unstable) (2026-11-24 r90980)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.5 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -498,22 +498,22 @@ initialising the parallel workers, but it is a noticeable improvement.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] BiocParallel_1.47.0 ggplot2_4.0.3       dplyr_1.2.1        
-    ## [4] rhdf5_2.57.20       BiocStyle_2.41.0   
+    ## [1] BiocParallel_1.48.0 ggplot2_4.0.4       dplyr_1.2.1        
+    ## [4] rhdf5_2.59.1        BiocStyle_2.42.0   
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        jsonlite_2.0.0      compiler_4.7.0     
-    ##  [4] BiocManager_1.30.27 tidyselect_1.2.1    rhdf5filters_1.25.4
-    ##  [7] parallel_4.7.0      jquerylib_0.1.4     systemfonts_1.3.2  
-    ## [10] scales_1.4.0        textshaping_1.0.5   yaml_2.3.12        
+    ##  [4] BiocManager_1.30.27 tidyselect_1.2.1    rhdf5filters_1.26.0
+    ##  [7] parallel_4.7.0      jquerylib_0.1.4     systemfonts_1.3.4  
+    ## [10] scales_1.4.0        textshaping_1.1.0   yaml_2.3.12        
     ## [13] fastmap_1.2.0       R6_2.6.1            labeling_0.4.3     
     ## [16] generics_0.1.4      knitr_1.52          tibble_3.3.1       
     ## [19] bookdown_0.48       desc_1.4.3          RColorBrewer_1.1-3 
     ## [22] bslib_0.12.0        pillar_1.11.1       rlang_1.3.0        
-    ## [25] utf8_1.2.6          cachem_1.1.0        xfun_0.61          
-    ## [28] S7_0.2.2            fs_2.1.0            sass_0.4.10        
-    ## [31] otel_0.2.0          cli_3.6.6           withr_3.0.3        
-    ## [34] pkgdown_2.2.1       magrittr_2.0.5      Rhdf5lib_2.1.0     
+    ## [25] utf8_1.2.6          cachem_1.1.0        xfun_0.62          
+    ## [28] S7_1.0.0            fs_2.1.0            sass_0.5.0         
+    ## [31] otel_0.3.0          cli_3.6.6           withr_3.0.3        
+    ## [34] pkgdown_2.2.1       magrittr_2.0.5      Rhdf5lib_2.3.0     
     ## [37] digest_0.6.39       grid_4.7.0          lifecycle_1.0.5    
     ## [40] vctrs_0.7.3         bench_1.1.4         evaluate_1.0.5     
     ## [43] glue_1.8.1          farver_2.1.2        codetools_0.2-20   

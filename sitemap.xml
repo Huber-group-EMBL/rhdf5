@@ -87,6 +87,7 @@
 <url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5Pset_nbit.html</loc></url>
 <url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5Pset_shuffle.html</loc></url>
 <url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5Pset_szip.html</loc></url>
+<url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5Pset_zstd.html</loc></url>
 <url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5Pshared_mesg_index.html</loc></url>
 <url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5R.html</loc></url>
 <url><loc>https://huber-group-embl.github.io/rhdf5/reference/H5Rcreate.html</loc></url>
