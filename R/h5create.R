@@ -232,6 +232,7 @@ h5createGroup <- function(file, group) {
           "BLOSC_ZLIB",
           "BLOSC_ZSTD",
           "LZF",
+          "ZSTD",
           "NONE"
         )
     ) {
@@ -272,6 +273,8 @@ h5createGroup <- function(file, group) {
       )
     } else if (filter == "LZF") {
       H5Pset_lzf(dcpl)
+    } else if (filter == "ZSTD") {
+      H5Pset_zstd(dcpl, level = level)
     }
   }
 
@@ -358,8 +361,9 @@ h5createGroup <- function(file, group) {
 #' different compression filter. }{ \itemize{ \item`"BLOSC_BLOSCLZ"`
 #' \item`"BLOSC_LZ4"` \item`"BLOSC_LZ4HC"` \item`"BLOSC_SNAPPY"`
 #' \item`"BLOSC_ZLIB"` \item`"BLOSC_ZSTD"` } } \item{lzf}{ \itemize{
-#' \item`"LZF"` } } \item{Disable: It is possible to write chunks without
-#' any compression applied.}{ \itemize{ \item`"NONE"` } } }
+#' \item`"LZF"` } } \item{zstd}{ \itemize{ \item`"ZSTD"` } } \item{Disable:
+#' It is possible to write chunks without any compression applied.}{ \itemize{
+#' \item`"NONE"` } } }
 #'
 #' @param file The filename (character) of the file in which the dataset will be
 #'   located. For advanced programmers it is possible to provide an object of
@@ -393,8 +397,9 @@ h5createGroup <- function(file, group) {
 #'   together with a compression property (argument `level`).
 #' @param fillValue Standard value for filling the dataset. The storage.mode of
 #'   value has to be convertible to the dataset type by HDF5.
-#' @param level The compression level used. An integer value between 0 (no
-#'   compression) and 9 (highest and slowest compression).
+#' @param level The compression level used. The accepted range depends on the
+#'   compression method set in `filter`. The default is 0L, which lets `"ZSTD"`
+#'   select its own default.
 #' @param filter Character defining which compression filter should be applied
 #'   to the chunks of the dataset.  See the Details section for more information
 #'   on the options that can be provided here.

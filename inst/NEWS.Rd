@@ -1,6 +1,18 @@
 \name{NEWS}
 \title{News for Package 'rhdf5'}
 
+\section{Changes in version 2.60.0}{
+  \subsection{New features}{
+    \itemize{
+      \item It is now possible to write (not only read) datasets with zstd
+      compression, either by using \code{H5Pset_zstd()} if working with the
+      low-level interface, or by setting \code{filter = "zstd"} in 
+      \code{h5createDataset()}. In the latter case, you may also need to update
+      the value of the \code{level} argument.
+    }
+  }
+}
+
 \section{Changes in version 2.58.0}{
 
   \subsection{New features}{

@@ -48,6 +48,18 @@ test_that("LZF filter works for writing", {
   expect_silent(H5Pclose(dcpl))
 })
 
+test_that("ZSTD filter works for writing", {
+  skip_if_not_installed("rhdf5filters")
+  expect_silent(dcpl <- H5Pcreate("H5P_DATASET_CREATE"))
+  expect_silent(H5Pset_fill_time(dcpl, "H5D_FILL_TIME_ALLOC"))
+  expect_silent(H5Pset_chunk(dcpl, 200))
+  expect_silent(H5Pset_zstd(dcpl))
+  expect_silent(did <- H5Dcreate(fid, "zstd", tid, sid, dcpl = dcpl))
+  expect_silent(H5Dwrite(buf = vec, h5dataset = did))
+  expect_silent(H5Dclose(did))
+  expect_silent(H5Pclose(dcpl))
+})
+
 H5Sclose(sid)
 H5Fclose(fid)
 
@@ -81,6 +93,16 @@ test_that("LZF filter works when reading", {
   skip_if_not_installed("rhdf5filters", minimum_version = "1.3.4")
 
   expect_silent(did <- H5Dopen(fid, name = "lzf"))
+  expect_equivalent(H5Dread(did), vec)
+  ## if compression worked the dataset should be smaller than 8000 bytes
+  expect_lt(H5Dget_storage_size(did), 4 * 2000)
+  expect_silent(H5Dclose(did))
+})
+
+test_that("ZSTD filter works when reading", {
+  skip_if_not_installed("rhdf5filters")
+
+  expect_silent(did <- H5Dopen(fid, name = "zstd"))
   expect_equivalent(H5Dread(did), vec)
   ## if compression worked the dataset should be smaller than 8000 bytes
   expect_lt(H5Dget_storage_size(did), 4 * 2000)

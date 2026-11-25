@@ -74,6 +74,7 @@ reference:
   - H5Pset_bzip2
   - H5Pset_blosc
   - H5Pset_lzf
+  - H5Pset_zstd
   - H5Pset_filter
   - H5P_chunk
   - H5P_chunk_cache
