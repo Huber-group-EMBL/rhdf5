@@ -1,6 +1,6 @@
 # Reading HDF5 Files In The Cloud
 
-The *[rhdf5](https://bioconductor.org/packages/3.24/rhdf5)* provides
+The *[rhdf5](https://bioconductor.org/packages/3.25/rhdf5)* provides
 limited support for read-only access to HDF5 files stored in Amazon S3
 buckets. This is implemented via the [HDF5 S3 Virtual File
 Driver](https://portal.hdfgroup.org/display/HDF5/Virtual+File+Drivers+-+S3+and+HDFS)
@@ -144,7 +144,7 @@ and
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-11-24 r90980)
+    ## R Under development (unstable) (2026-11-26 r90998)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 26.04.1 LTS
     ## 

@@ -76,8 +76,7 @@ h5writeDataset(
 
 - ...:
 
-  Further arguments passed to
-  [`H5Dwrite()`](https://huber-group-embl.github.io/rhdf5/reference/H5Dwrite.md).
+  Further arguments passed to `h5writeDataset()` specific methods.
 
 - createnewfile:
 

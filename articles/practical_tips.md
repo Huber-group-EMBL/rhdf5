@@ -75,7 +75,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.073   0.004   0.077
+    ##   0.074   0.002   0.076
 
 We can see this is marginally slower, because there’s a small overhead
 in selecting this disjoint set of columns, but it’s only marginal and
@@ -107,7 +107,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.068   0.001   0.069
+    ##   0.068   0.002   0.070
 
 ``` r
 
@@ -161,10 +161,10 @@ system.time(res4 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##  19.838   0.052  19.892
+    ##  20.014   0.060  20.075
 
 This is clearly a terrible idea, it takes ages! For reference, using the
-`index` argument with this set of columns takes 0.09 seconds. This poor
+`index` argument with this set of columns takes 0.094 seconds. This poor
 performance is driven by two things:
 
 1.  Our dataset was created as a single chunk. This means for each
@@ -212,7 +212,7 @@ system.time(res5 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##   2.470   0.038   2.507
+    ##   2.536   0.026   2.562
 
 This is still quite slow, and the remaining time is being spent on the
 overheads associated with multiple calls to
@@ -238,7 +238,7 @@ system.time(f2())
 ```
 
     ##    user  system elapsed 
-    ##   0.582   0.011   0.593
+    ##   0.600   0.002   0.601
 
 We can see this has a significant effect, although it’s still an order
 of magnitude slower than when we were dealing with regularly spaced
@@ -304,7 +304,7 @@ requested data.
 
 ## Writing in parallel
 
-Using *[rhdf5](https://bioconductor.org/packages/3.24/rhdf5)* it isn’t
+Using *[rhdf5](https://bioconductor.org/packages/3.25/rhdf5)* it isn’t
 possible to open an HDF5 file and write multiple datasets in parallel.
 However we can try to mimic this behaviour by writing each dataset to
 it’s own HDF5 file in parallel and then using the function
@@ -411,7 +411,7 @@ gather functions together. Like the `simple_writer()` function we
 created earlier, this takes the name of an output file and the list of
 datasets to be written as input. We can also provide a
 `BiocParallelParam` instance from
-*[BiocParallel](https://bioconductor.org/packages/3.24/BiocParallel)* to
+*[BiocParallel](https://bioconductor.org/packages/3.25/BiocParallel)* to
 trial writing the temporary file in parallel. If the `BPPARAM` argument
 isn’t provided then they will be written in serial.
 
@@ -463,21 +463,21 @@ Below we can see some timings comparing calling `simple_writer()` with
     ## # A tibble: 4 × 3
     ##   expression               min median
     ##   <bch:expr>             <dbl>  <dbl>
-    ## 1 simple writer           38.4   38.4
-    ## 2 split/gather - 1 core   30.3   30.4
-    ## 3 split/gather - 2 cores  15.6   15.7
-    ## 4 split/gather - 4 cores  11.4   11.7
+    ## 1 simple writer           30.1   30.2
+    ## 2 split/gather - 1 core   30.3   30.3
+    ## 3 split/gather - 2 cores  15.6   15.8
+    ## 4 split/gather - 4 cores  11.8   11.8
 
 We can see from our benchmark results that there is some performance
 improvement to be achieved by using the parallel approach. Based on the
 median times of out three iterations using two cores sees an speedup of
-2.45 and 3.3 with 4 cores. This isn’t quite linear, presumably because
+1.91 and 2.6 with 4 cores. This isn’t quite linear, presumably because
 there are overheads involved both in using a two-step process and
 initialising the parallel workers, but it is a noticeable improvement.
 
 ## Session info
 
-    ## R Under development (unstable) (2026-11-24 r90980)
+    ## R Under development (unstable) (2026-11-26 r90998)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 26.04.1 LTS
     ## 

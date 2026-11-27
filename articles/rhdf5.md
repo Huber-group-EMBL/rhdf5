@@ -9,11 +9,11 @@ functions on **R** level to make a usage of HDF5 files more easy.
 
 ## Installation of the HDF5 package
 
-To install the *[rhdf5](https://bioconductor.org/packages/3.24/rhdf5)*
+To install the *[rhdf5](https://bioconductor.org/packages/3.25/rhdf5)*
 package, you need a current version (\>= 4.0.0) of **R**
 (www.r-project.org). After installing **R** you can run the following
 commands from the **R** command shell to install
-*[rhdf5](https://bioconductor.org/packages/3.24/rhdf5)*.
+*[rhdf5](https://bioconductor.org/packages/3.25/rhdf5)*.
 
 ``` r
 
@@ -280,7 +280,7 @@ h5closeAll()
 
 ### Writing and reading with subsetting, chunking and compression
 
-The *[rhdf5](https://bioconductor.org/packages/3.24/rhdf5)* package
+The *[rhdf5](https://bioconductor.org/packages/3.25/rhdf5)* package
 provides two ways of subsetting. One can specify the submatrix with the
 **R**-style index lists or with the HDF5 style hyperslabs. Note, that
 the two next examples below show two alternative ways for reading and
@@ -821,7 +821,7 @@ of these is removed.*
 **R** does not support a native datatype for 64-bit integers. All
 integers in **R** are 32-bit integers. When reading 64-bit integers from
 a HDF5-file, you may run into troubles.
-*[rhdf5](https://bioconductor.org/packages/3.24/rhdf5)* is able to deal
+*[rhdf5](https://bioconductor.org/packages/3.25/rhdf5)* is able to deal
 with 64-bit integers, but you still should pay attention.
 
 As an example, we create an HDF5 file that contains 64-bit integers.
@@ -1067,7 +1067,7 @@ H5Fclose(h5file)
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-11-24 r90980)
+    ## R Under development (unstable) (2026-11-26 r90998)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 26.04.1 LTS
     ## 
