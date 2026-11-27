@@ -61,7 +61,8 @@ kind.}
 
 \item{name}{The name of the dataset in the HDF5 file.}
 
-\item{\dots}{Further arguments passed to \code{\link[=H5Dwrite]{H5Dwrite()}}.}
+\item{\dots}{Further arguments passed to \code{\link[=h5writeDataset]{h5writeDataset()}} specific
+methods.}
 
 \item{createnewfile}{If \code{TRUE}, a new file will be created if necessary.}
 

@@ -160,7 +160,8 @@ h5writeDatasetHelper <- function(
 #' @param createnewfile If `TRUE`, a new file will be created if necessary.
 #' @param write.attributes (logical) If TRUE, all R-attributes attached to the
 #'   object `obj` are written to the HDF5 file.
-#' @param \dots Further arguments passed to [H5Dwrite()].
+#' @param \dots Further arguments passed to [h5writeDataset()] specific
+#'   methods.
 #'
 #' @returns `h5write` returns 0 if successful.
 #'
