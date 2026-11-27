@@ -2,6 +2,15 @@
 \title{News for Package 'rhdf5'}
 
 \section{Changes in version 2.60.0}{
+  \subsection{Breaking changes}{
+    \itemize{
+      \item Zstd is now the default compression algorithm used in 
+      \code{h5createDataset()} and \code{h5write()}. This changes the meaning
+      of the \code{level} argument if previously used without specifying
+      a compression algorithm. While no error will result from this change in
+      meaning, it may not have the effect users intended.
+    }
+  }
   \subsection{New features}{
     \itemize{
       \item It is now possible to write (not only read) datasets with zstd
