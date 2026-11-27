@@ -15,8 +15,8 @@ h5createDataset(
   encoding = NULL,
   chunk = dims,
   fillValue,
-  level = 6,
-  filter = "gzip",
+  level = 0L,
+  filter = "zstd",
   shuffle = TRUE,
   native = FALSE
 )
@@ -64,8 +64,9 @@ together with a compression property (argument \code{level}).}
 \item{fillValue}{Standard value for filling the dataset. The storage.mode of
 value has to be convertible to the dataset type by HDF5.}
 
-\item{level}{The compression level used. An integer value between 0 (no
-compression) and 9 (highest and slowest compression).}
+\item{level}{The compression level used. The accepted range depends on the
+compression method set in \code{filter}. The default is 0L, which lets \code{"ZSTD"}
+select its own default.}
 
 \item{filter}{Character defining which compression filter should be applied
 to the chunks of the dataset.  See the Details section for more information
@@ -112,40 +113,40 @@ values for selecting them are shown below:
 
 \describe{ \item{zlib: Ubiquitous deflate compression algorithm used in GZIP
 or ZIP files.  All three options below achieve the same result.}{ \itemize{
-\item\code{"GZIP"}, \item\code{"ZLIB"}, \item\code{"DEFLATE"} } } \item{szip:
+\item\code{"gzip"}, \item\code{"zlib"}, \item\code{"deflate"} } } \item{szip:
 Compression algorithm maintained by the HDF5 group.}{ \itemize{
-\item\code{"SZIP"} } } \item{bzip2}{ \itemize{ \item\code{"BZIP2"} } }
+\item\code{"szip"} } } \item{bzip2}{ \itemize{ \item\code{"bzip2"} } }
 \item{BLOSC meta compressor: As a meta-compressor BLOSC wraps several
 different compression algorithms.  Each of the options below will active a
-different compression filter. }{ \itemize{ \item\code{"BLOSC_BLOSCLZ"}
-\item\code{"BLOSC_LZ4"} \item\code{"BLOSC_LZ4HC"} \item\code{"BLOSC_SNAPPY"}
-\item\code{"BLOSC_ZLIB"} \item\code{"BLOSC_ZSTD"} } } \item{lzf}{ \itemize{
-\item\code{"LZF"} } } \item{zstd}{ \itemize{ \item\code{"ZSTD"} } } \item{Disable:
+different compression filter. }{ \itemize{ \item\code{"blosc_blosclz"}
+\item\code{"blosc_lz4"} \item\code{"blosc_lz4hc"} \item\code{"bloc_snappy"}
+\item\code{"blosc_zlib"} \item\code{"bloc_zstd"} } } \item{lzf}{ \itemize{
+\item\code{"lzf"} } } \item{zstd}{ \itemize{ \item\code{"zstd"} } } \item{Disable:
 It is possible to write chunks without any compression applied.}{ \itemize{
-\item\code{"NONE"} } } }
+\item\code{"none"} } } }
 }
 \examples{
 
 h5File <- tempfile(pattern = "_ex_createDataset.h5")
 h5createFile(h5File)
 
-# create dataset with compression
-h5createDataset(h5File, "A", c(5, 8), storage.mode = "integer", chunk = c(5, 1), level = 6)
+# create dataset with zstd compression (by default)
+h5createDataset(h5File, "A", c(5, 8), storage.mode = "integer", chunk = c(5, 1))
 
 # create dataset without compression
-h5createDataset(h5File, "B", c(5, 8), storage.mode = "integer")
-h5createDataset(h5File, "C", c(5, 8), storage.mode = "double")
+h5createDataset(h5File, "B", c(5, 8), storage.mode = "integer", compression = "none")
+h5createDataset(h5File, "C", c(5, 8), storage.mode = "double", compression = "none")
 
 # create dataset with bzip2 compression
 h5createDataset(h5File, "D", c(5, 8),
   storage.mode = "integer",
-  chunk = c(5, 1), filter = "BZIP2", level = 6
+  chunk = c(5, 1), filter = "bzip2", level = 6
 )
 
 # create a dataset of strings & define size based on longest string
 ex_strings <- c("long", "longer", "longest")
 h5createDataset(h5File, "E",
-  storage.mode = "character", chunk = 3, level = 6,
+  storage.mode = "character", chunk = 3,
   dims = length(ex_strings), size = max(nchar(ex_strings))
 )
 

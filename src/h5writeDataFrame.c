@@ -58,23 +58,19 @@ SEXP _h5createDataFrame(SEXP _obj, SEXP _loc_id, SEXP _name, SEXP _level,
   H5Pset_fill_time(plist, H5D_FILL_TIME_ALLOC);
   H5Pset_obj_track_times(plist, 0);
 
-  /* enter here if we're using compression */
-  if (level > 0) {
+  int rank = 1L;
+  hsize_t cdim[rank];
 
-    int rank = 1L;
-    hsize_t cdim[rank];
-
-    if (chunk > n) {
-      chunk = n;
-    }
-    hsize_t max_chunk_length = floor(UINT_MAX / offset);
-    cdim[0] = max_chunk_length;
-    if (chunk < max_chunk_length) {
-      cdim[0] = chunk;
-    }
-    H5Pset_chunk(plist, rank, cdim);
-    H5Pset_deflate(plist, level);
+  if (chunk > n) {
+    chunk = n;
   }
+  hsize_t max_chunk_length = floor(UINT_MAX / offset);
+  cdim[0] = max_chunk_length;
+  if (chunk < max_chunk_length) {
+    cdim[0] = chunk;
+  }
+  H5Pset_chunk(plist, rank, cdim);
+  H5Pset_zstd(plist, level);
 
   hid_t dset_id =
       H5Dcreate(loc_id, name, tid, space, H5P_DEFAULT, plist, H5P_DEFAULT);

@@ -136,9 +136,11 @@ h5writeDatasetHelper <- function(
 #'   cols or the number of cols that fit within 4GB of memory. If
 #'   `DataFrameAsCompound=FALSE` each row of the `data.frame` can be consider an
 #'   "col".
-#' @param level The compression level. An integer value between 0 (no
-#'   compression) and 9 (highest and slowest compression). Only used, if the
-#'   dataset does not yet exist. See [h5createDataset()] to create an dataset.
+#' @param level The compression level. An integer value between 1 (lowest and
+#'   fastest compression) and 22 (highest and slowest compression). The value
+#'   0 (the default) has a special meaning letting the ZSTD compression library
+#'   use its own internal default. Only used if the dataset does not yet exist.
+#'   See [h5createDataset()] to create a dataset.
 #' @param native An object of class `logical`. If TRUE, array-like objects
 #'   are treated as stored in HDF5 row-major rather than R column-major
 #'   orientation. Using `native = TRUE` increases HDF5 file portability
@@ -248,11 +250,22 @@ h5writeDataset.data.frame <- function(
   obj,
   h5loc,
   name,
-  level = 6,
+  level = 0L,
   chunk,
   DataFrameAsCompound = TRUE,
   ...
 ) {
+  if (!missing(level) && level == 0L) {
+    # FIXME: Remove in the next rhdf5 version.
+    warning(
+      "The default compression method has changed from gzip to zstd in rhdf5 ",
+      "2.59. With the zstd compression, 0 is equivalent to zstd internal ",
+      "default level (currently 3).\nTo disable compression entirely, create ",
+      "the dataset via `h5createDataset(compression = 'none') before passing ",
+      "it to `h5writeDataset()`.",
+      call. = FALSE
+    )
+  }
   chkDots(...)
   if (DataFrameAsCompound) {
     if (H5Lexists(h5loc, name)) {
@@ -308,7 +321,9 @@ h5writeDataset.data.frame <- function(
 }
 
 #' @export
-h5writeDataset.list <- function(obj, h5loc, name, level = 6, ...) {
+h5writeDataset.list <- function(obj, h5loc, name, level = 0L, ...) {
+  # No need for the "level" deprecation warning here since it'll be
+  # triggered downstream.
   chkDots(...)
   exists <- H5Lexists(h5loc, name)
   if (exists) {
@@ -369,7 +384,7 @@ h5writeDataset.array <- function(
   size = NULL,
   variableLengthString = TRUE,
   encoding = NULL,
-  level = 6,
+  level = 0L,
   ...
 ) {
   chkDots(...)
@@ -391,6 +406,17 @@ h5writeDataset.array <- function(
     is_fixed_size_str <-
       H5Tget_class(type) == "H5T_STRING" && !H5Tis_variable_str(type)
   } else {
+    if (!missing(level) && level == 0L) {
+      # FIXME: Remove in the next rhdf5 version.
+      warning(
+        "The default compression method has changed from gzip to zstd in rhdf5 ",
+        "2.59. With the zstd compression, 0 is equivalent to zstd internal ",
+        "default level (currently 3).\nTo disable compression entirely, create ",
+        "the dataset via `h5createDataset(compression = 'none') before passing ",
+        "it to `h5writeDataset()`.",
+        call. = FALSE
+      )
+    }
     is_fixed_size_str <- FALSE
     if (storage.mode(obj) == "character") {
       is_fixed_size_str <- !variableLengthString
@@ -431,7 +457,11 @@ h5writeDataset.array <- function(
       size = size,
       encoding = match.arg(encoding, choices = c("ASCII", "UTF-8", "UTF8")),
       chunk = dim,
-      level = level
+      level = level,
+      # FIXME: we can eventually remove this and rely on it being the default
+      # in `h5createDataset()`. But for now, specifying it explicitly silences
+      # the warning regarding change in compression level.
+      filter = "zstd"
     )
     h5dataset <- H5Dopen(h5loc, name)
     on.exit(H5Dclose(h5dataset))

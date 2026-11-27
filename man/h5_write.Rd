@@ -27,7 +27,7 @@ h5writeDataset(obj, h5loc, name, ...)
   obj,
   h5loc,
   name,
-  level = 6,
+  level = 0L,
   chunk,
   DataFrameAsCompound = TRUE,
   ...
@@ -45,7 +45,7 @@ h5writeDataset(obj, h5loc, name, ...)
   size = NULL,
   variableLengthString = TRUE,
   encoding = NULL,
-  level = 6,
+  level = 0L,
   ...
 )
 }
@@ -80,9 +80,11 @@ location identifier (file or group). See \code{\link[=H5Fcreate]{H5Fcreate()}},
 \code{\link[=H5Fopen]{H5Fopen()}}, \code{\link[=H5Gcreate]{H5Gcreate()}}, \code{\link[=H5Gopen]{H5Gopen()}} to
 create an object of this kind.}
 
-\item{level}{The compression level. An integer value between 0 (no
-compression) and 9 (highest and slowest compression). Only used, if the
-dataset does not yet exist. See \code{\link[=h5createDataset]{h5createDataset()}} to create an dataset.}
+\item{level}{The compression level. An integer value between 1 (lowest and
+fastest compression) and 22 (highest and slowest compression). The value
+0 (the default) has a special meaning letting the ZSTD compression library
+use its own internal default. Only used if the dataset does not yet exist.
+See \code{\link[=h5createDataset]{h5createDataset()}} to create a dataset.}
 
 \item{chunk}{Specifies the number of items to be include in an HDF5 chunk. If
 left unspecified the defaults is the smaller of: the total number of

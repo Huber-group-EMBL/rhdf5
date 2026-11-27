@@ -53,6 +53,15 @@ SEXP _H5Pset_lzf(SEXP _plist_id) {
   return Rval;
 }
 
+herr_t H5Pset_zstd(hid_t plist_id, unsigned int level) {
+  herr_t herr;
+  unsigned int cd_values[1];
+  cd_values[0] = level;
+  herr = H5Pset_filter(plist_id, H5Z_FILTER_ZSTD, H5Z_FLAG_OPTIONAL, (size_t)1,
+                       cd_values);
+  return herr;
+}
+
 SEXP _H5Pset_zstd(SEXP _plist_id, SEXP _level) {
 
   herr_t herr;

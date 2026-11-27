@@ -236,8 +236,8 @@ h5createGroup <- function(file, group) {
           "NONE"
         )
     ) {
-      warning("Filter not found, using default: ZLIB")
-      filter <- "ZLIB"
+      warning("Filter not found, using default: ZSTD")
+      filter <- "ZSTD"
     }
 
     ## only use this shuffle if not using blosc filter
@@ -246,7 +246,9 @@ h5createGroup <- function(file, group) {
     }
 
     ## set the appropriate filter
-    if (filter %in% c("GZIP", "ZLIB", "DEFLATE")) {
+    if (filter == "ZSTD") {
+      H5Pset_zstd(dcpl, level = level)
+    } else if (filter %in% c("GZIP", "ZLIB", "DEFLATE")) {
       H5Pset_deflate(dcpl, level = level)
     } else if (filter == "SZIP") {
       H5Pset_szip(dcpl, 1L, 32L)
@@ -273,8 +275,6 @@ h5createGroup <- function(file, group) {
       )
     } else if (filter == "LZF") {
       H5Pset_lzf(dcpl)
-    } else if (filter == "ZSTD") {
-      H5Pset_zstd(dcpl, level = level)
     }
   }
 
@@ -353,17 +353,17 @@ h5createGroup <- function(file, group) {
 #'
 #' \describe{ \item{zlib: Ubiquitous deflate compression algorithm used in GZIP
 #' or ZIP files.  All three options below achieve the same result.}{ \itemize{
-#' \item`"GZIP"`, \item`"ZLIB"`, \item`"DEFLATE"` } } \item{szip:
+#' \item`"gzip"`, \item`"zlib"`, \item`"deflate"` } } \item{szip:
 #' Compression algorithm maintained by the HDF5 group.}{ \itemize{
-#' \item`"SZIP"` } } \item{bzip2}{ \itemize{ \item`"BZIP2"` } }
+#' \item`"szip"` } } \item{bzip2}{ \itemize{ \item`"bzip2"` } }
 #' \item{BLOSC meta compressor: As a meta-compressor BLOSC wraps several
 #' different compression algorithms.  Each of the options below will active a
-#' different compression filter. }{ \itemize{ \item`"BLOSC_BLOSCLZ"`
-#' \item`"BLOSC_LZ4"` \item`"BLOSC_LZ4HC"` \item`"BLOSC_SNAPPY"`
-#' \item`"BLOSC_ZLIB"` \item`"BLOSC_ZSTD"` } } \item{lzf}{ \itemize{
-#' \item`"LZF"` } } \item{zstd}{ \itemize{ \item`"ZSTD"` } } \item{Disable:
+#' different compression filter. }{ \itemize{ \item`"blosc_blosclz"`
+#' \item`"blosc_lz4"` \item`"blosc_lz4hc"` \item`"bloc_snappy"`
+#' \item`"blosc_zlib"` \item`"bloc_zstd"` } } \item{lzf}{ \itemize{
+#' \item`"lzf"` } } \item{zstd}{ \itemize{ \item`"zstd"` } } \item{Disable:
 #' It is possible to write chunks without any compression applied.}{ \itemize{
-#' \item`"NONE"` } } }
+#' \item`"none"` } } }
 #'
 #' @param file The filename (character) of the file in which the dataset will be
 #'   located. For advanced programmers it is possible to provide an object of
@@ -418,23 +418,23 @@ h5createGroup <- function(file, group) {
 #' h5File <- tempfile(pattern = "_ex_createDataset.h5")
 #' h5createFile(h5File)
 #'
-#' # create dataset with compression
-#' h5createDataset(h5File, "A", c(5, 8), storage.mode = "integer", chunk = c(5, 1), level = 6)
+#' # create dataset with zstd compression (by default)
+#' h5createDataset(h5File, "A", c(5, 8), storage.mode = "integer", chunk = c(5, 1))
 #'
 #' # create dataset without compression
-#' h5createDataset(h5File, "B", c(5, 8), storage.mode = "integer")
-#' h5createDataset(h5File, "C", c(5, 8), storage.mode = "double")
+#' h5createDataset(h5File, "B", c(5, 8), storage.mode = "integer", compression = "none")
+#' h5createDataset(h5File, "C", c(5, 8), storage.mode = "double", compression = "none")
 #'
 #' # create dataset with bzip2 compression
 #' h5createDataset(h5File, "D", c(5, 8),
 #'   storage.mode = "integer",
-#'   chunk = c(5, 1), filter = "BZIP2", level = 6
+#'   chunk = c(5, 1), filter = "bzip2", level = 6
 #' )
 #'
 #' # create a dataset of strings & define size based on longest string
 #' ex_strings <- c("long", "longer", "longest")
 #' h5createDataset(h5File, "E",
-#'   storage.mode = "character", chunk = 3, level = 6,
+#'   storage.mode = "character", chunk = 3,
 #'   dims = length(ex_strings), size = max(nchar(ex_strings))
 #' )
 #'
@@ -499,11 +499,24 @@ h5createDataset <- function(
   encoding = NULL,
   chunk = dims,
   fillValue,
-  level = 6,
-  filter = "gzip",
+  level = 0L,
+  filter = "zstd",
   shuffle = TRUE,
   native = FALSE
 ) {
+  if (!missing(level) && missing(filter)) {
+    # Users set a level, relying on the previous default that was GZIP
+    # FIXME: Remove in the next rhdf5 version.
+    warning(
+      "The default compression method has changed from GZIP to ZSTD in rhdf5 ",
+      "2.59. The explicitly specified `level` value may no longer has the ",
+      "same meaning.\nYou can remove this warning by leaving `level` to its ",
+      "default value or by making the value of the `filter` argument ",
+      "explicit.",
+      call. = FALSE
+    )
+  }
+
   loc <- h5checktypeOrOpenLoc(file, native = native)
   on.exit(h5closeitLoc(loc))
 
@@ -527,9 +540,10 @@ h5createDataset <- function(
     chunk = chunk
   )
 
-  if (level > 0 && is.null(chunk)) {
+  if (tolower(filter) != "none" && is.null(chunk)) {
     warning(
-      "Compression (level > 0) requires chunking. Set chunk size to activate compression."
+      "Compression (filter != 'none') requires chunking. ",
+      "Set chunk size to activate compression."
     )
   }
   if (length(chunk) > 0) {

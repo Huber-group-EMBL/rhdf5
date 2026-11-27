@@ -15,6 +15,7 @@
 SEXP _H5Pset_bzip2( SEXP _plist_id, SEXP _level );
 SEXP _H5Pset_blosc( SEXP _plist_id, SEXP _method, SEXP _level, SEXP _shuffle, SEXP _typesize );
 SEXP _H5Pset_lzf( SEXP _plist_id );
+herr_t H5Pset_zstd(hid_t plist_id, unsigned int level);
 SEXP _H5Pset_zstd( SEXP _plist_id, SEXP _level );
 
 #endif

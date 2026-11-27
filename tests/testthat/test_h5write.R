@@ -155,20 +155,26 @@ h5createFile(h5f2)
 ## we use file size as a proxy for chunk size
 ## larger chunks should compress better in this example
 test_that("Changing chunk size works", {
-  expect_silent(h5write(
-    data.frame("A" = rep(1:100), "B" = 201:300),
-    h5f1,
-    "dset",
-    level = 7,
-    chunk = 1L
-  ))
-  expect_silent(h5write(
-    data.frame("A" = rep(1:100), "B" = 201:300),
-    h5f2,
-    "dset",
-    level = 7,
-    chunk = 100L
-  ))
+  expect_warning(
+    h5write(
+      data.frame("A" = rep(1:100), "B" = 201:300),
+      h5f1,
+      "dset",
+      level = 7,
+      chunk = 1L
+    ),
+    "changed"
+  )
+  expect_warning(
+    h5write(
+      data.frame("A" = rep(1:100), "B" = 201:300),
+      h5f2,
+      "dset",
+      level = 7,
+      chunk = 100L
+    ),
+    "changed"
+  )
   expect_true(file.size(h5f2) < file.size(h5f1))
 })
 
