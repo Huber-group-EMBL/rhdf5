@@ -15,3 +15,10 @@ creation property list.}
 \description{
 Add the BZIP2 filter to the chunk processing pipeline.
 }
+\examples{
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_bzip2(plist, level = 4)
+H5Pclose(plist)
+
+}

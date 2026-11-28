@@ -17,3 +17,10 @@ is currently 3.}
 \description{
 Add the Zstandard (ZSTD) filter to the chunk processing pipeline.
 }
+\examples{
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_zstd(plist, level = 5)
+H5Pclose(plist)
+
+}

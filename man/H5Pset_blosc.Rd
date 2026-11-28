@@ -25,3 +25,11 @@ provide by BLOSC, rather than the HDF5 version.}
 \description{
 Add the BLOSC filter to the chunk processing pipeline.
 }
+\examples{
+tid <- H5Tcopy("H5T_NATIVE_DOUBLE")
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_blosc(plist, tid, method = 1, level = 6, shuffle = TRUE)
+H5Pclose(plist)
+
+}

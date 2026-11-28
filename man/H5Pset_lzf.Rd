@@ -15,3 +15,10 @@ creation property list.}
 \description{
 Add the LZF filter to the chunk processing pipeline.
 }
+\examples{
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_lzf(plist)
+H5Pclose(plist)
+
+}

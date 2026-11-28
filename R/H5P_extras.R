@@ -7,6 +7,12 @@
 #'
 #' @references <https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d__u_g.html#subsubsec_dataset_filters_szip>
 #'
+#' @examples
+#' plist <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_chunk(plist, c(10, 10))
+#' H5Pset_szip(plist, options_mask = 4L, pixels_per_block = 8L)
+#' H5Pclose(plist)
+#'
 #' @export
 H5Pset_szip <- function(h5plist, options_mask, pixels_per_block) {
   h5checktypeAndPLC(h5plist, "H5P_DATASET_CREATE")
@@ -27,6 +33,12 @@ H5Pset_szip <- function(h5plist, options_mask, pixels_per_block) {
 #' @param h5plist Object of class [H5IdComponent-class] representing a dataset
 #' creation property list.
 #' @param level Compression level to be used by the selected algorithm.
+#'
+#' @examples
+#' plist <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_chunk(plist, c(10, 10))
+#' H5Pset_bzip2(plist, level = 4)
+#' H5Pclose(plist)
 #'
 #' @export
 H5Pset_bzip2 <- function(h5plist, level = 2L) {
@@ -53,6 +65,12 @@ H5Pset_bzip2 <- function(h5plist, level = 2L) {
 #' @param level Compression level to be used by the ZSTD algorithm. Must be an
 #' integer between 0 (default) and 22. When 0, ZSTD uses its own default, which
 #' is currently 3.
+#'
+#' @examples
+#' plist <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_chunk(plist, c(10, 10))
+#' H5Pset_zstd(plist, level = 5)
+#' H5Pclose(plist)
 #'
 #' @export
 H5Pset_zstd <- function(h5plist, level = 3L) {
@@ -87,6 +105,13 @@ H5Pset_zstd <- function(h5plist, level = 3L) {
 #' @param shuffle Logical defining whether the bit-shuffle algorithm should
 #' be used prior to compression.  This makes use of the shuffle implementation
 #' provide by BLOSC, rather than the HDF5 version.
+#'
+#' @examples
+#' tid <- H5Tcopy("H5T_NATIVE_DOUBLE")
+#' plist <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_chunk(plist, c(10, 10))
+#' H5Pset_blosc(plist, tid, method = 1, level = 6, shuffle = TRUE)
+#' H5Pclose(plist)
 #'
 #' @export
 H5Pset_blosc <- function(
@@ -139,6 +164,12 @@ H5Pset_blosc <- function(
 #' @param h5plist Object of class [H5IdComponent-class] representing a dataset
 #' creation property list.
 #' @param h5tid Deprecated. This argument is not used and will be ignored.
+#'
+#' @examples
+#' plist <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_chunk(plist, c(10, 10))
+#' H5Pset_lzf(plist)
+#' H5Pclose(plist)
 #'
 #' @export
 H5Pset_lzf <- function(h5plist, h5tid) {
