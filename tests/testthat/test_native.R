@@ -317,3 +317,111 @@ test_that("H5F native functionality", {
     )
   }
 })
+
+test_that("h5read supports native with bit64conversion", {
+  skip_if_not_installed("bit64")
+
+  f <- withr::local_tempfile(fileext = ".h5")
+  h5createFile(f)
+
+  # 2D signed 64-bit integer dataset including values beyond 32-bit range
+  h5createDataset(f, "int64_2d", dims = c(3, 4), H5type = "H5T_STD_I64LE")
+  vals_2d <- matrix(c(1:11, 2^32), nrow = 3, ncol = 4)
+  h5write(vals_2d, f, "int64_2d")
+
+  m_bit64_false <- h5read(
+    f,
+    "int64_2d",
+    native = FALSE,
+    bit64conversion = "bit64"
+  )
+  m_bit64_true <- h5read(
+    f,
+    "int64_2d",
+    native = TRUE,
+    bit64conversion = "bit64"
+  )
+  expect_s3_class(m_bit64_true, "integer64")
+  expect_identical(dim(m_bit64_true), c(4L, 3L))
+  expect_identical(m_bit64_true, t(m_bit64_false))
+  expect_identical(m_bit64_true[4, 3], bit64::as.integer64(2^32))
+
+  m_dbl_false <- h5read(
+    f,
+    "int64_2d",
+    native = FALSE,
+    bit64conversion = "double"
+  )
+  m_dbl_true <- h5read(
+    f,
+    "int64_2d",
+    native = TRUE,
+    bit64conversion = "double"
+  )
+  expect_identical(m_dbl_true, t(m_dbl_false))
+
+  # 2D unsigned 32-bit integer dataset
+  h5createDataset(f, "uint32_2d", dims = c(3, 4), H5type = "H5T_STD_U32LE")
+  h5write(matrix(2^31 + 1:12, nrow = 3, ncol = 4), f, "uint32_2d")
+  u_bit64_false <- h5read(
+    f,
+    "uint32_2d",
+    native = FALSE,
+    bit64conversion = "bit64"
+  )
+  u_bit64_true <- h5read(
+    f,
+    "uint32_2d",
+    native = TRUE,
+    bit64conversion = "bit64"
+  )
+  expect_s3_class(u_bit64_true, "integer64")
+  expect_identical(u_bit64_true, t(u_bit64_false))
+
+  u_dbl_false <- h5read(
+    f,
+    "uint32_2d",
+    native = FALSE,
+    bit64conversion = "double"
+  )
+  u_dbl_true <- h5read(
+    f,
+    "uint32_2d",
+    native = TRUE,
+    bit64conversion = "double"
+  )
+  expect_identical(u_dbl_true, t(u_dbl_false))
+
+  # 3D signed 64-bit integer dataset
+  h5createDataset(f, "int64_3d", dims = c(2, 3, 4), H5type = "H5T_STD_I64LE")
+  h5write(array(c(1:23, 2^32), dim = c(2, 3, 4)), f, "int64_3d")
+  a_bit64_false <- h5read(
+    f,
+    "int64_3d",
+    native = FALSE,
+    bit64conversion = "bit64"
+  )
+  a_bit64_true <- h5read(
+    f,
+    "int64_3d",
+    native = TRUE,
+    bit64conversion = "bit64"
+  )
+  expect_s3_class(a_bit64_true, "integer64")
+  expect_identical(dim(a_bit64_true), c(4L, 3L, 2L))
+  expect_identical(as.numeric(a_bit64_true), as.numeric(aperm(a_bit64_false)))
+
+  a_dbl_false <- h5read(
+    f,
+    "int64_3d",
+    native = FALSE,
+    bit64conversion = "double"
+  )
+  a_dbl_true <- h5read(
+    f,
+    "int64_3d",
+    native = TRUE,
+    bit64conversion = "double"
+  )
+  expect_identical(a_dbl_true, aperm(a_dbl_false))
+})

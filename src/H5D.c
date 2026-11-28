@@ -371,6 +371,11 @@ SEXP H5Dread_helper_INTEGER(hid_t dataset_id, hid_t file_space_id,
           } else if (b == 8) {
             int64_to_double(intbuf, n, buf, sgn);
           }
+          if (native) {
+            PERMUTE(Rval, REAL, mem_space_id);
+            PROTECT(Rval);
+            protected++;
+          }
         } else { // convert to integer64 class
           long long i;
           if ((b < 4) || ((b == 4) && (sgn == H5T_SGN_2))) {
@@ -382,8 +387,11 @@ SEXP H5Dread_helper_INTEGER(hid_t dataset_id, hid_t file_space_id,
           } else if (b == 8) {
             int64_to_integer64(intbuf, n, buf, sgn);
           }
-          if (native)
-            PERMUTE(Rval, INTEGER, mem_space_id);
+          if (native) {
+            PERMUTE(Rval, REAL, mem_space_id);
+            PROTECT(Rval);
+            protected++;
+          }
           SEXP la = PROTECT(mkString("integer64"));
           setAttrib(Rval, R_ClassSymbol, la);
           UNPROTECT(1);
