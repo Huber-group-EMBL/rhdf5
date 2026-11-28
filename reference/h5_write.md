@@ -147,14 +147,14 @@ h5writeDataset(
 - stride:
 
   The stride of the hypercube. Read the introduction
-  [http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html](http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.md)
+  <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html>
   before using this argument. R behaves like Fortran in this example.
   This argument is ignored, if index is not NULL.
 
 - block:
 
   The block size of the hyperslab. Read the introduction
-  [http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html](http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.md)
+  <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html>
   before using this argument. R behaves like Fortran in this example.
   This argument is ignored, if index is not NULL.
 
@@ -192,9 +192,9 @@ in the HDF5 file, one can write subarrays, (so called hyperslabs) to the
 HDF5 file. The arguments `start`, `stride`, `block`, `count` define the
 subset of the dataset in the HDF5 file that is to be written to. See
 these introductions to hyperslabs:
-<https://support.hdfgroup.org/HDF5/Tutor/selectsimple.html>,
-<https://support.hdfgroup.org/HDF5/Tutor/select.html> and
-[http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html](http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.md).
+<https://docs.hdfgroup.org/archive/support/HDF5/Tutor/selectsimple.html>,
+<https://docs.hdfgroup.org/archive/support/HDF5/Tutor/select.html> and
+<https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html>.
 Please note that in R the first dimension is the fastest changing
 dimension.
 
@@ -208,7 +208,7 @@ imaginary parts respectively.
 
 ## References
 
-<https://portal.hdfgroup.org/display/HDF5>
+<https://support.hdfgroup.org/documentation/hdf5/latest/>
 
 ## See also
 

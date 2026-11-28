@@ -19,9 +19,8 @@ H5Pset_szip(h5plist, options_mask, pixels_per_block)
 - options_mask, pixels_per_block:
 
   Integer vectors of length 1, setting parameters of the SZIP algorithm.
-  See <https://portal.hdfgroup.org/display/HDF5/H5P_SET_SZIP> for more
-  details.
+  See the HDF5 documentation for more details.
 
 ## References
 
-<https://portal.hdfgroup.org/display/HDF5/Szip+Compression+in+HDF+Products>
+<https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d__u_g.html#subsubsec_dataset_filters_szip>

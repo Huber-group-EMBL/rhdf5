@@ -80,7 +80,7 @@ h5ls(
 
 ## References
 
-<https://portal.hdfgroup.org/display/HDF5>
+<https://support.hdfgroup.org/documentation/hdf5/latest/>
 
 ## See also
 

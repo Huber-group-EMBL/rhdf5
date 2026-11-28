@@ -178,16 +178,16 @@ NULL.</p></dd>
 
 <dt id="arg-stride">stride<a class="anchor" aria-label="anchor" href="#arg-stride"></a></dt>
 <dd><p>The stride of the hypercube. Read the introduction
-<a href="http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html" class="external-link">http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html</a> before using this
-argument. R behaves like Fortran in this example. This argument is ignored,
-if index is not NULL.</p></dd>
+<a href="https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html" class="external-link">https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html</a>
+before using this argument. R behaves like Fortran in this example. This
+argument is ignored, if index is not NULL.</p></dd>
 
 
 <dt id="arg-block">block<a class="anchor" aria-label="anchor" href="#arg-block"></a></dt>
 <dd><p>The block size of the hyperslab. Read the introduction
-<a href="http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html" class="external-link">http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html</a> before using this
-argument. R behaves like Fortran in this example. This argument is ignored,
-if index is not NULL.</p></dd>
+<a href="https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html" class="external-link">https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html</a>
+before using this argument. R behaves like Fortran in this example. This
+argument is ignored, if index is not NULL.</p></dd>
 
 
 <dt id="arg-count">count<a class="anchor" aria-label="anchor" href="#arg-count"></a></dt>
@@ -223,10 +223,11 @@ in the HDF5 file and in memory. If the dataset already exists in the HDF5
 file, one can write subarrays, (so called hyperslabs) to the HDF5 file. The
 arguments <code>start</code>, <code>stride</code>, <code>block</code>, <code>count</code> define the subset of the
 dataset in the HDF5 file that is to be written to. See these introductions to
-hyperslabs: <a href="https://support.hdfgroup.org/HDF5/Tutor/selectsimple.html" class="external-link">https://support.hdfgroup.org/HDF5/Tutor/selectsimple.html</a>,
-<a href="https://support.hdfgroup.org/HDF5/Tutor/select.html" class="external-link">https://support.hdfgroup.org/HDF5/Tutor/select.html</a> and
-<a href="http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html" class="external-link">http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html</a>. Please note that in
-R the first dimension is the fastest changing dimension.</p>
+hyperslabs:
+<a href="https://docs.hdfgroup.org/archive/support/HDF5/Tutor/selectsimple.html" class="external-link">https://docs.hdfgroup.org/archive/support/HDF5/Tutor/selectsimple.html</a>,
+<a href="https://docs.hdfgroup.org/archive/support/HDF5/Tutor/select.html" class="external-link">https://docs.hdfgroup.org/archive/support/HDF5/Tutor/select.html</a> and
+<a href="https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html" class="external-link">https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html</a>.
+Please note that in R the first dimension is the fastest changing dimension.</p>
 <p>When viewing the HDF5 datasets with any C-program (e.g. HDFView), the order
 of dimensions is inverted. In the R interface counting starts with 1, whereas
 in the C-programs (e.g. HDFView) counting starts with 0.</p>
@@ -236,7 +237,7 @@ imaginary parts respectively.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p><a href="https://portal.hdfgroup.org/display/HDF5" class="external-link">https://portal.hdfgroup.org/display/HDF5</a></p>
+    <p><a href="https://support.hdfgroup.org/documentation/hdf5/latest/" class="external-link">https://support.hdfgroup.org/documentation/hdf5/latest/</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
