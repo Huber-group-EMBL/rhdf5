@@ -236,6 +236,10 @@ h5createGroup <- function(file, group) {
           "NONE"
         )
     ) {
+      # We would get much better performance out of other filters.
+      # BUT for maximum interoperability with other implementation, we stick to
+      # one of the pre-defined filters:
+      # https://support.hdfgroup.org/documentation/hdf5/latest/group___h5_z.html
       warning("Filter not found, using default: ZLIB")
       filter <- "ZLIB"
     }
