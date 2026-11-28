@@ -22,5 +22,5 @@ Bernd Fischer, Mike L. Smith
 ``` r
 
 h5version()
-#> This is Bioconductor rhdf5 2.59.1 linking to C-library HDF5 1.14.6 (Rhdf5lib version: 2.3.0) and rhdf5filters 1.26.0
+#> This is Bioconductor rhdf5 2.59.1 linking to C-library HDF5 1.14.6 (Rhdf5lib version: 2.3.0) and rhdf5filters 1.27.0
 ```

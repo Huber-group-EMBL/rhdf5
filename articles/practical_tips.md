@@ -56,7 +56,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.025   0.011   0.036
+    ##   0.022   0.008   0.030
 
 Next, instead of selecting 10,000 consecutive columns we’ll ask for
 every other column. This should still return the same amount of data and
@@ -75,7 +75,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.074   0.002   0.076
+    ##   0.060   0.002   0.062
 
 We can see this is marginally slower, because there’s a small overhead
 in selecting this disjoint set of columns, but it’s only marginal and
@@ -107,7 +107,7 @@ system.time(
 ```
 
     ##    user  system elapsed 
-    ##   0.068   0.002   0.070
+    ##   0.055   0.001   0.056
 
 ``` r
 
@@ -161,10 +161,10 @@ system.time(res4 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##  20.014   0.060  20.075
+    ##  17.297   0.083  17.381
 
 This is clearly a terrible idea, it takes ages! For reference, using the
-`index` argument with this set of columns takes 0.094 seconds. This poor
+`index` argument with this set of columns takes 0.069 seconds. This poor
 performance is driven by two things:
 
 1.  Our dataset was created as a single chunk. This means for each
@@ -212,7 +212,7 @@ system.time(res5 <- vapply(
 ```
 
     ##    user  system elapsed 
-    ##   2.536   0.026   2.562
+    ##    1.82    0.04    1.86
 
 This is still quite slow, and the remaining time is being spent on the
 overheads associated with multiple calls to
@@ -238,7 +238,7 @@ system.time(f2())
 ```
 
     ##    user  system elapsed 
-    ##   0.600   0.002   0.601
+    ##   0.451   0.005   0.455
 
 We can see this has a significant effect, although it’s still an order
 of magnitude slower than when we were dealing with regularly spaced
@@ -247,7 +247,7 @@ including the size of the dataset chunks and the sparsity of the column
 index, and you varying the `block_size` argument will produce differing
 performances. The plot below shows the timings achieved by providing a
 selection of values to `block_size`. It suggests the optimal parameter
-in this case is probably a block size of 10000, which took 0.09
+in this case is probably a block size of 10000, which took 0.07
 seconds - noticeably faster than when passing all columns to the `index`
 argument in a single call.
 
@@ -463,21 +463,21 @@ Below we can see some timings comparing calling `simple_writer()` with
     ## # A tibble: 4 × 3
     ##   expression               min median
     ##   <bch:expr>             <dbl>  <dbl>
-    ## 1 simple writer           30.1   30.2
-    ## 2 split/gather - 1 core   30.3   30.3
-    ## 3 split/gather - 2 cores  15.6   15.8
-    ## 4 split/gather - 4 cores  11.8   11.8
+    ## 1 simple writer          26.1    26.2
+    ## 2 split/gather - 1 core  26.8    26.9
+    ## 3 split/gather - 2 cores 13.4    13.4
+    ## 4 split/gather - 4 cores  9.81   10.2
 
 We can see from our benchmark results that there is some performance
 improvement to be achieved by using the parallel approach. Based on the
 median times of out three iterations using two cores sees an speedup of
-1.91 and 2.6 with 4 cores. This isn’t quite linear, presumably because
+1.96 and 2.6 with 4 cores. This isn’t quite linear, presumably because
 there are overheads involved both in using a two-step process and
 initialising the parallel workers, but it is a noticeable improvement.
 
 ## Session info
 
-    ## R Under development (unstable) (2026-11-26 r90998)
+    ## R Under development (unstable) (2026-11-27 r91004)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 26.04.1 LTS
     ## 
@@ -498,12 +498,12 @@ initialising the parallel workers, but it is a noticeable improvement.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] BiocParallel_1.48.0 ggplot2_4.0.4       dplyr_1.2.1        
-    ## [4] rhdf5_2.59.1        BiocStyle_2.42.0   
+    ## [1] BiocParallel_1.49.0 ggplot2_4.0.4       dplyr_1.2.1        
+    ## [4] rhdf5_2.59.1        BiocStyle_2.43.0   
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        jsonlite_2.0.0      compiler_4.7.0     
-    ##  [4] BiocManager_1.30.27 tidyselect_1.2.1    rhdf5filters_1.26.0
+    ##  [4] BiocManager_1.30.27 tidyselect_1.2.1    rhdf5filters_1.27.0
     ##  [7] parallel_4.7.0      jquerylib_0.1.4     systemfonts_1.3.4  
     ## [10] scales_1.4.0        textshaping_1.1.0   yaml_2.3.12        
     ## [13] fastmap_1.2.0       R6_2.6.1            labeling_0.4.3     
