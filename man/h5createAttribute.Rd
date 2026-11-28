@@ -92,7 +92,7 @@ H5Fclose(fid)
 
 }
 \references{
-\url{https://portal.hdfgroup.org/display/HDF5}
+\url{https://support.hdfgroup.org/documentation/hdf5/latest/}
 }
 \seealso{
 \code{\link[=h5createFile]{h5createFile()}}, \code{\link[=h5createGroup]{h5createGroup()}}, \code{\link[=h5createDataset]{h5createDataset()}},

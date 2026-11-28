@@ -42,7 +42,7 @@ h5lsConvertToDataframe <- function(L, all = FALSE) {
 #'
 #' @author Bernd Fischer, Mike L. Smith
 #' @seealso [h5dump()]
-#' @references <https://portal.hdfgroup.org/display/HDF5>
+#' @references <https://support.hdfgroup.org/documentation/hdf5/latest/>
 #' @keywords programming interface IO file
 #' @examples
 #'

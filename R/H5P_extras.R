@@ -3,9 +3,9 @@
 #' @param h5plist Object of class [H5IdComponent-class] representing a dataset
 #' creation property list.
 #' @param options_mask,pixels_per_block Integer vectors of length 1, setting parameters
-#' of the SZIP algorithm. See <https://portal.hdfgroup.org/display/HDF5/H5P_SET_SZIP> for more details.
+#' of the SZIP algorithm. See the HDF5 documentation for more details.
 #'
-#' @references <https://portal.hdfgroup.org/display/HDF5/Szip+Compression+in+HDF+Products>
+#' @references <https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d__u_g.html#subsubsec_dataset_filters_szip>
 #'
 #' @export
 H5Pset_szip <- function(h5plist, options_mask, pixels_per_block) {

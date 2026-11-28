@@ -616,7 +616,7 @@ h5createDataset <- function(
 #' @author Bernd Fischer
 #' @seealso [h5createFile()], [h5createGroup()], [h5createDataset()],
 #'   [h5read()], [h5write()], [rhdf5]
-#' @references <https://portal.hdfgroup.org/display/HDF5>
+#' @references <https://support.hdfgroup.org/documentation/hdf5/latest/>
 #' @keywords programming interface IO file
 #' @examples
 #'

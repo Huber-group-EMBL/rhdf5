@@ -107,14 +107,14 @@ R). Counting is R-style 1-based. This argument is ignored, if index is not
 NULL.}
 
 \item{stride}{The stride of the hypercube. Read the introduction
-\url{http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html} before using this
-argument. R behaves like Fortran in this example. This argument is ignored,
-if index is not NULL.}
+\url{https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html}
+before using this argument. R behaves like Fortran in this example. This
+argument is ignored, if index is not NULL.}
 
 \item{block}{The block size of the hyperslab. Read the introduction
-\url{http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html} before using this
-argument. R behaves like Fortran in this example. This argument is ignored,
-if index is not NULL.}
+\url{https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html}
+before using this argument. R behaves like Fortran in this example. This
+argument is ignored, if index is not NULL.}
 
 \item{count}{The number of blocks to be written. This argument is ignored, if
 index is not NULL.}
@@ -143,10 +143,11 @@ in the HDF5 file and in memory. If the dataset already exists in the HDF5
 file, one can write subarrays, (so called hyperslabs) to the HDF5 file. The
 arguments \code{start}, \code{stride}, \code{block}, \code{count} define the subset of the
 dataset in the HDF5 file that is to be written to. See these introductions to
-hyperslabs: \url{https://support.hdfgroup.org/HDF5/Tutor/selectsimple.html},
-\url{https://support.hdfgroup.org/HDF5/Tutor/select.html} and
-\url{http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html}. Please note that in
-R the first dimension is the fastest changing dimension.
+hyperslabs:
+\url{https://docs.hdfgroup.org/archive/support/HDF5/Tutor/selectsimple.html},
+\url{https://docs.hdfgroup.org/archive/support/HDF5/Tutor/select.html} and
+\url{https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html}.
+Please note that in R the first dimension is the fastest changing dimension.
 
 When viewing the HDF5 datasets with any C-program (e.g. HDFView), the order
 of dimensions is inverted. In the R interface counting starts with 1, whereas
@@ -172,7 +173,7 @@ h5write(matrix(1:5, nr = 5, nc = 1), file = h5File, name = "S", index = list(NUL
 
 }
 \references{
-\url{https://portal.hdfgroup.org/display/HDF5}
+\url{https://support.hdfgroup.org/documentation/hdf5/latest/}
 }
 \seealso{
 \code{\link[=h5ls]{h5ls()}}, \code{\link[=h5createFile]{h5createFile()}},

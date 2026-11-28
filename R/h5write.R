@@ -89,10 +89,11 @@ h5writeDatasetHelper <- function(
 #' file, one can write subarrays, (so called hyperslabs) to the HDF5 file. The
 #' arguments `start`, `stride`, `block`, `count` define the subset of the
 #' dataset in the HDF5 file that is to be written to. See these introductions to
-#' hyperslabs: <https://support.hdfgroup.org/HDF5/Tutor/selectsimple.html>,
-#' <https://support.hdfgroup.org/HDF5/Tutor/select.html> and
-#' <http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html>. Please note that in
-#' R the first dimension is the fastest changing dimension.
+#' hyperslabs:
+#' <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/selectsimple.html>,
+#' <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/select.html> and
+#' <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html>.
+#' Please note that in R the first dimension is the fastest changing dimension.
 #'
 #' When viewing the HDF5 datasets with any C-program (e.g. HDFView), the order
 #' of dimensions is inverted. In the R interface counting starts with 1, whereas
@@ -122,13 +123,13 @@ h5writeDatasetHelper <- function(
 #'   R). Counting is R-style 1-based. This argument is ignored, if index is not
 #'   NULL.
 #' @param stride The stride of the hypercube. Read the introduction
-#'   <http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html> before using this
-#'   argument. R behaves like Fortran in this example. This argument is ignored,
-#'   if index is not NULL.
+#'   <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html>
+#'   before using this argument. R behaves like Fortran in this example. This
+#'   argument is ignored, if index is not NULL.
 #' @param block The block size of the hyperslab. Read the introduction
-#'   <http://ftp.hdfgroup.org/HDF5/Tutor/phypecont.html> before using this
-#'   argument. R behaves like Fortran in this example. This argument is ignored,
-#'   if index is not NULL.
+#'   <https://docs.hdfgroup.org/archive/support/HDF5/Tutor/phypecont.html>
+#'   before using this argument. R behaves like Fortran in this example. This
+#'   argument is ignored, if index is not NULL.
 #' @param count The number of blocks to be written. This argument is ignored, if
 #'   index is not NULL.
 #' @param chunk Specifies the number of items to be include in an HDF5 chunk. If
@@ -169,7 +170,7 @@ h5writeDatasetHelper <- function(
 #'
 #' @seealso [h5ls()], [h5createFile()],
 #'   [h5createDataset()], [rhdf5]
-#' @references <https://portal.hdfgroup.org/display/HDF5>
+#' @references <https://support.hdfgroup.org/documentation/hdf5/latest/>
 #' @keywords programming interface IO file
 #' @examples
 #'

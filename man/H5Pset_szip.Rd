@@ -11,11 +11,11 @@ H5Pset_szip(h5plist, options_mask, pixels_per_block)
 creation property list.}
 
 \item{options_mask, pixels_per_block}{Integer vectors of length 1, setting parameters
-of the SZIP algorithm. See \url{https://portal.hdfgroup.org/display/HDF5/H5P_SET_SZIP} for more details.}
+of the SZIP algorithm. See the HDF5 documentation for more details.}
 }
 \description{
 Add the SZIP compression filter to the chunk processing pipeline.
 }
 \references{
-\url{https://portal.hdfgroup.org/display/HDF5/Szip+Compression+in+HDF+Products}
+\url{https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d__u_g.html#subsubsec_dataset_filters_szip}
 }

@@ -78,7 +78,7 @@ h5ls(file = "https://rhdf5-public.s3.eu-central-1.amazonaws.com/h5ex_t_array.h5"
 
 }
 \references{
-\url{https://portal.hdfgroup.org/display/HDF5}
+\url{https://support.hdfgroup.org/documentation/hdf5/latest/}
 }
 \seealso{
 \code{\link[=h5dump]{h5dump()}}
