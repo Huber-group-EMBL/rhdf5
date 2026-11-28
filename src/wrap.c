@@ -254,7 +254,7 @@ static R_CallMethodDef libraryRCalls[] = {
     {"_H5Pget_chunk", (DL_FUNC)&_H5Pget_chunk, 1},
     {"_H5Pset_deflate", (DL_FUNC)&_H5Pset_deflate, 2},
     {"_H5Pset_fill_value", (DL_FUNC)&_H5Pset_fill_value, 3},
-    /* {"_H5Pget_fill_value", (DL_FUNC) &_H5Pget_fill_value, 3}, */
+    {"_H5Pget_fill_value", (DL_FUNC)&_H5Pget_fill_value, 2},
     {"_H5Pfill_value_defined", (DL_FUNC)&_H5Pfill_value_defined, 1},
     {"_H5Pset_fill_time", (DL_FUNC)&_H5Pset_fill_time, 2},
     {"_H5Pget_fill_time", (DL_FUNC)&_H5Pget_fill_time, 1},

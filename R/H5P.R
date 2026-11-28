@@ -517,45 +517,56 @@ H5Pset_deflate <- function(h5plist, level) {
 #' @seealso [H5P_fill_time],[H5Pfill_value_defined]
 #'
 #' @name H5P_fill_value
+#'
+#' @examples
+#' ## numeric fill value
+#' dcpl <- H5Pcreate("H5P_DATASET_CREATE")
+#' H5Pset_fill_value(dcpl, 42.5)
+#' tid <- H5Tcopy("H5T_IEEE_F64LE")
+#' H5Pget_fill_value(dcpl, tid)
+#' H5Pclose(dcpl)
+#'
 NULL
 
 #' @rdname H5P_fill_value
 #' @export
-H5Pset_fill_value <- function(h5plist, value) {
+H5Pset_fill_value <- function(
+  h5plist,
+  value,
+  size = nchar(value, type = "bytes")
+) {
   if (length(value) > 1L) {
     stop("'value' must be a vector of length 1.")
   }
 
   h5checktypeAndPLC(h5plist, "H5P_DATASET_CREATE")
-  storage.mode <- storage.mode(value)
-  tid <- switch(
-    storage.mode,
-    double = h5constants$H5T["H5T_IEEE_F64LE"],
-    integer = h5constants$H5T["H5T_STD_I32LE"],
-    logical = h5constants$H5T["H5T_STD_I8LE"],
-    character = {
-      tid <- H5Tcopy("H5T_C_S1")
-      size <- nchar(value, type = "bytes")
-      H5Tset_size(tid, size)
-      H5Tset_strpad(tid, strpad = "NULLPAD")
-      if (Encoding(value) == "UTF-8") {
-        cset <- "UTF-8"
-      } else {
-        cset <- "ASCII"
-      }
-      H5Tset_cset(tid, cset = cset)
-      tid
-    },
-    {
-      stop(
-        "datatype ",
-        storage.mode,
-        " not supported. Try 'double', 'integer', or 'character'."
-      )
-    }
+  tid <- .setDataType(
+    NULL,
+    storage.mode(value),
+    size = size,
+    encoding = "UTF-8"
   )
   res <- .Call("_H5Pset_fill_value", h5plist@ID, tid, value, PACKAGE = "rhdf5")
   invisible(res)
+}
+
+#' @rdname H5P_fill_value
+#'
+#' @param dtype The identifier of the dataset's datatype, as returned by
+#'   [H5Dget_type()]. This is used to determine how the fill value should
+#'   be interpreted and returned; it should match the datatype that was
+#'   used when the fill value was originally set with
+#'   `H5Pset_fill_value()`.
+#'
+#' @returns `H5Pget_fill_value` returns the fill value stored in the
+#'   property list, coerced to an appropriate R type.  Returns `NULL` if
+#'   the fill value could not be retrieved.
+#'
+#' @export
+H5Pget_fill_value <- function(h5plist, dtype) {
+  h5checktypeAndPLC(h5plist, "H5P_DATASET_CREATE")
+  res <- .Call("_H5Pget_fill_value", h5plist@ID, dtype, PACKAGE = "rhdf5")
+  res
 }
 
 #' Determine whether a property list has a fill value defined
