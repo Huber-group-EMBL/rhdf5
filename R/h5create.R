@@ -401,9 +401,8 @@ h5createGroup <- function(file, group) {
 #'   together with a compression property (argument `level`).
 #' @param fillValue Standard value for filling the dataset. The storage.mode of
 #'   value has to be convertible to the dataset type by HDF5.
-#' @param level The compression level used. The accepted range depends on the
-#'   compression method set in `filter`. The default is 0L, which lets `"ZSTD"`
-#'   select its own default.
+#' @param level The compression level used. An integer value between 0 (no
+#'   compression) and 9 (highest and slowest compression).
 #' @param filter Character defining which compression filter should be applied
 #'   to the chunks of the dataset.  See the Details section for more information
 #'   on the options that can be provided here.
