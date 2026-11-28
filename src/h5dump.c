@@ -99,6 +99,7 @@ herr_t opAddToDumpTree(hid_t g_id, const char *name, const H5L_info2_t *info,
 
     newElement->datatype = getDatatypeName(type);
     newElement->dataclass = getDatatypeClass(type);
+    H5Tclose(type);
 
     hsize_t size[H5S_MAX_RANK];
     hsize_t maxsize[H5S_MAX_RANK];

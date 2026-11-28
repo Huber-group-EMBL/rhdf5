@@ -45,6 +45,7 @@ SEXP _h5createDataFrame(SEXP _obj, SEXP _loc_id, SEXP _name, SEXP _level,
       H5Tset_strpad(tid2, H5T_STR_NULLPAD);
       H5Tset_size(tid2, strsize[i]);
       H5Tinsert(tid, nn, offset, tid2);
+      H5Tclose(tid2);
       offset = offset + strsize[i];
     } else if (TYPEOF(VECTOR_ELT(_obj, i)) == RAWSXP) {
       H5Tinsert(tid, nn, offset, H5T_NATIVE_UCHAR);
@@ -80,6 +81,8 @@ SEXP _h5createDataFrame(SEXP _obj, SEXP _loc_id, SEXP _name, SEXP _level,
       H5Dcreate(loc_id, name, tid, space, H5P_DEFAULT, plist, H5P_DEFAULT);
 
   H5Sclose(space);
+  H5Tclose(tid);
+  H5Pclose(plist);
 
   addHandle(dset_id);
   SEXP Rval = HID_2_STRSXP(dset_id);
@@ -145,6 +148,7 @@ SEXP _h5writeDataFrame(SEXP _obj, SEXP _dset_id) {
         }
       }
       H5Dwrite(dset_id, tidn, space, space, H5P_DEFAULT, strbuf);
+      H5Tclose(tid2);
       H5Tclose(tidn);
     } else if (TYPEOF(VECTOR_ELT(_obj, i)) == RAWSXP) {
       hid_t tidn = H5Tcreate(H5T_COMPOUND, H5Tget_size(H5T_NATIVE_UCHAR));

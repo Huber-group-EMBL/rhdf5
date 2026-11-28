@@ -41,7 +41,7 @@ SEXP _H5Fopen(SEXP _name, SEXP _flags, SEXP _fapl_id) {
 SEXP _H5Freopen(SEXP _file_id) {
   hid_t file_id = STRSXP_2_HID(_file_id);
   hid_t hid = H5Freopen(file_id);
-  addHandle(file_id);
+  addHandle(hid);
 
   return HID_2_STRSXP(hid);
 }

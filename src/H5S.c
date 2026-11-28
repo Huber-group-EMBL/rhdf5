@@ -124,9 +124,9 @@ SEXP _H5Sget_simple_extent_dims(SEXP _space_id) {
 
   SET_VECTOR_ELT(Rval, 1, Rsize);
   SET_VECTOR_ELT(Rval, 2, Rmaxsize);
-  UNPROTECT(2);
+  UNPROTECT(2); // Rsize, Rmaxsize
 
-  UNPROTECT(1);
+  UNPROTECT(1); // Rval
   return (Rval);
 }
 
