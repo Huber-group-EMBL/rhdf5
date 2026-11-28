@@ -24,3 +24,12 @@ H5Pset_szip(h5plist, options_mask, pixels_per_block)
 ## References
 
 <https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d__u_g.html#subsubsec_dataset_filters_szip>
+
+## Examples
+
+``` r
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_szip(plist, options_mask = 4L, pixels_per_block = 8L)
+H5Pclose(plist)
+```

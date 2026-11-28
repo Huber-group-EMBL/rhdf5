@@ -35,3 +35,13 @@ H5Pset_blosc(h5plist, h5tid, method = 1L, level = 6L, shuffle = TRUE)
   Logical defining whether the bit-shuffle algorithm should be used
   prior to compression. This makes use of the shuffle implementation
   provide by BLOSC, rather than the HDF5 version.
+
+## Examples
+
+``` r
+tid <- H5Tcopy("H5T_NATIVE_DOUBLE")
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_blosc(plist, tid, method = 1, level = 6, shuffle = TRUE)
+H5Pclose(plist)
+```

@@ -19,3 +19,12 @@ H5Pset_bzip2(h5plist, level = 2L)
 - level:
 
   Compression level to be used by the selected algorithm.
+
+## Examples
+
+``` r
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_bzip2(plist, level = 4)
+H5Pclose(plist)
+```

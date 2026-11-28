@@ -19,3 +19,12 @@ H5Pset_lzf(h5plist, h5tid)
 - h5tid:
 
   Deprecated. This argument is not used and will be ignored.
+
+## Examples
+
+``` r
+plist <- H5Pcreate("H5P_DATASET_CREATE")
+H5Pset_chunk(plist, c(10, 10))
+H5Pset_lzf(plist)
+H5Pclose(plist)
+```
